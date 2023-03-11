@@ -1,2 +1,2 @@
 # GarbageHub
-Want Very Col Huh for exploit? GarbageHub Is the solution!
+Want Very Col Hub for exploit? GarbageHub Is the solution!
