@@ -3,7 +3,6 @@ getgenv().AutoClick = false
 getgenv().AutoCollect = false
 getgenv().AutoRent = false
 getgenv().Godmode = false
-getgenv().RandomItems = false
 -----------------------------------------------[Function]-----------------------------------------------
 function godmode()
 while getgenv().Godmode == true do
@@ -110,6 +109,15 @@ wait()
 game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("GiveChainsaw"):FireServer()
   	end    
 })
+Tab:AddButton({
+	Name = "Infinite Rebirth",
+	Callback = function()      	
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("giverebirth"):FireServer()
+wait()	
+for i = 1,300 do
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("GiveChainsaw"):FireServer()
+  	end end
+})
 local Tab1 = OrionWindow:MakeTab({
 	Name = "Item Quest",
 	Icon = "",
@@ -137,7 +145,7 @@ firetouchinterest(Workspace.Bullet.Handle,game.Players.LocalPlayer.Character.Hum
   	end    
 })
 Tab1:AddButton({
-	Name = "Cookie [?]",
+	Name = "Cookie [Yoshida]",
 	Callback = function()      		
 firetouchinterest(Workspace.Cookies.Handle,game.Players.LocalPlayer.Character.HumanoidRootPart,1)
   	end    
@@ -149,7 +157,7 @@ firetouchinterest(Workspace.Nichirin.Handle,game.Players.LocalPlayer.Character.H
   	end    
 })
 Tab1:AddButton({
-	Name = "BodyPillow [thoru]",
+	Name = "BodyPillow [Thoru]",
 	Callback = function()      		
 firetouchinterest(Workspace.BodyPillow.Handle,game.Players.LocalPlayer.Character.HumanoidRootPart,1)
   	end    
@@ -281,7 +289,7 @@ local Tab4 = OrionWindow:MakeTab({
 	Icon = "",
 	PremiumOnly = false
 })
-local Section = Tab:AddSection({
+local Section = Tab4:AddSection({
 	Name = "Food Option"
 })
 Tab4:AddButton({
@@ -391,6 +399,16 @@ Tab3:AddSlider({
 		game.Players.LocalPlayer.character.Humanoid.WalkSpeed = sw
 	end    
 })
+
+
+local Credit = OrionWindow:MakeTab({
+	Name = "Credit",
+	Icon = "",
+	PremiumOnly = false
+})
+Credit:AddLabel("ScriptBlox : Ayangj30")
+Credit:AddLabel("Github : Pro69Yes")
+Credit:AddLabel("Discord : ? [No. . .?]")
 OrionLib:Init()
 
 
