@@ -1,5 +1,5 @@
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
-local Window = Rayfield:CreateWindow({
+
+local Window = KeySystem:CreateWindow({
    Name = "GarbageHub Loader",
    LoadingTitle = "Loading . . . .",
    LoadingSubtitle = "By ForgorMoment",
@@ -17,8 +17,8 @@ local Window = Rayfield:CreateWindow({
    KeySettings = {
       Title = "Garbage Hub",
       Subtitle = "Key System",
-      Note = "Key : forgor",
-      FileName = "SiriusKey",
+      Note = "Key : Amogus",
+      FileName = "GarbageHubKey",
       SaveKey = true,
       GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
       Key = "Amogus"
