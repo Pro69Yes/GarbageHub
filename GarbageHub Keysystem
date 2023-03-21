@@ -24,4 +24,4 @@ local Window = KeySystem:CreateWindow({
       Key = "Amogus"
    }
 })
-Rayfield:Destroy()
+KeySystem:Destroy()
