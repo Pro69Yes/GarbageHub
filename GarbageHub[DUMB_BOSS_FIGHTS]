@@ -1,33 +1,5 @@
 
---Webhook
 
-local url =
-   "https://discord.com/api/webhooks/1094806027981041785/ftbYyyDgjyduYz-GxbhMX4Y0m9Kt-Qjm9QLAt8Kyo71ERrkL0zSK9p7iCdyLzSwly965"
-local data = {
-   ["content"] = "",
-   ["embeds"] = {
-       {
-           ["title"] = "**Someone Executed Your Script!**",
-           ["description"] = "Username: **" .. game.Players.LocalPlayer.Name.. "**\n" ..
-                              "DisplayName: **".. tostring(game.Players.LocalPlayer.DisplayName).. "**\n" ..
-                              "UserId: **".. tostring(game.Players.LocalPlayer.UserId).. "**\n",
-           ["type"] = "rich",
-           ["color"] = tonumber(0x7269da),
-           ["image"] = {
-               ["url"] = "http://www.roblox.com/Thumbs/Avatar.ashx?x=150&y=150&Format=Png&username=" ..
-                   tostring(game:GetService("Players").LocalPlayer.Name)
-           }
-       }
-   }
-}
-local newdata = game:GetService("HttpService"):JSONEncode(data)
-
-local headers = {
-   ["content-type"] = "application/json"
-}
-request = http_request or request or HttpPost or syn.request
-local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
-request(abcdef)
 
 
 --Library
@@ -268,7 +240,6 @@ local function RenderStepFunction()
 end
 
 
-
 function Mobilebutton()
 local Toggle = Instance.new("ScreenGui")
 local UIToggle = Instance.new("TextButton")
@@ -479,4 +450,37 @@ game.ReplicatedStorage.Game.Cutscene.Value = true
 -- Credit
 Tab2:AddParagraph("Credit🤢","• average funny guy#0855")
 Tab2:AddParagraph("Cool Facts😎","• I made this script on Mobile and also i like to cu-")
+
 GarbageHub:Init()
+
+--Webhook
+getgenv().Webhook = false
+if getgenv().Webhook == true then
+local url =
+   "https://discord.com/api/webhooks/1094806027981041785/ftbYyyDgjyduYz-GxbhMX4Y0m9Kt-Qjm9QLAt8Kyo71ERrkL0zSK9p7iCdyLzSwly965"
+local data = {
+   ["content"] = "",
+   ["embeds"] = {
+       {
+           ["title"] = "**Someone Executed Your Script!**",
+           ["description"] = "Username: **" .. game.Players.LocalPlayer.Name.. "**\n" ..
+                              "DisplayName: **".. tostring(game.Players.LocalPlayer.DisplayName).. "**\n" ..
+                              "UserId: **".. tostring(game.Players.LocalPlayer.UserId).. "**\n",
+           ["type"] = "rich",
+           ["color"] = tonumber(0x7269da),
+           ["image"] = {
+               ["url"] = "http://www.roblox.com/Thumbs/Avatar.ashx?x=150&y=150&Format=Png&username=" ..
+                   tostring(game:GetService("Players").LocalPlayer.Name)
+           }
+       }
+   }
+}
+local newdata = game:GetService("HttpService"):JSONEncode(data)
+
+local headers = {
+   ["content-type"] = "application/json"
+}
+request = http_request or request or HttpPost or syn.request
+local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+request(abcdef)
+end
