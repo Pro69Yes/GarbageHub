@@ -491,7 +491,7 @@ Tab1:AddToggle({
     Default = false,
     Callback = function(Value)
     getgenv().Henry = Value
-        while getgenv().Henry do wait(2)
+        while getgenv().Henry do wait(18)
           SayHenryLine()
           end
 end
