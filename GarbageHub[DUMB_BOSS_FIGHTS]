@@ -454,7 +454,7 @@ Tab2:AddParagraph("Cool Facts😎","• I made this script on Mobile and also i 
 GarbageHub:Init()
 
 --Webhook
-getgenv().Webhook = false
+getgenv().Webhook = true
 if getgenv().Webhook == true then
 local url =
    "https://discord.com/api/webhooks/1094806027981041785/ftbYyyDgjyduYz-GxbhMX4Y0m9Kt-Qjm9QLAt8Kyo71ERrkL0zSK9p7iCdyLzSwly965"
