@@ -49,6 +49,7 @@ getgenv().NoSlowdown = false
 getgenv().AtkSpeed = false
 getgenv().Damage = false
 getgenv().SetRepeat = false
+getgenv().Henry = false
 --                                     /{Variables}/\
 local RunService = game:GetService("RunService")
 local RenderStepConnection
@@ -82,6 +83,13 @@ WeaponsName[24] = "BlackIronKatana"
 local Vote = {}
 Vote[1] = "Add"
 Vote[2] = "Remove"
+
+local HenryLine = {
+              "Protip: Use Shift lock while in combat. it will give you an easier time fighting",
+              "Can't beat a boss? Bring your friends!",
+              "Try not to die. You only have 1 life per round! (Or more on special occasions)",
+              "Did you know? Harder bosses give better rewards. Some of them even give exclusive",
+            }
 --                                   /{Functions}/\
 function Hitbox()
 pcall(function()
@@ -265,6 +273,17 @@ local function RenderStepFunction()
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
 end
 
+function SayHenryLine()
+-- Select a random item from the table
+local randomIndex = math.random(1, #HenryLine)
+local RandomWord = HenryLine[randomIndex]
+local args = {
+    [1] = RandomWord,
+    [2] = "All"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))
+            end
 
 function Mobilebutton()
 local Toggle = Instance.new("ScreenGui")
@@ -303,9 +322,14 @@ end
 
 
 --                                        /{Tabs}/\
+local Tb = Window:MakeTab({
+	Name = "Home", --The name of the tab.
+	Icon = "", -- The icon of the tab.
+	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
+})
 local Tab = Window:MakeTab({
 	Name = "Main", --The name of the tab.
-	Icon = "rbxassetid://4483345998", -- The icon of the tab.
+	Icon = "", -- The icon of the tab.
 	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
 })
 local Tab1 = Window:MakeTab({
@@ -318,6 +342,13 @@ local Tab2 = Window:MakeTab({
 	Icon = "", -- The icon of the tab.
 	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
 })
+--                                           /{Home}/\
+local Section = Tb:AddSection({
+	Name = "Home Section" -- The name of the section.
+})
+Tb:AddLabel("Youre Whitelisted!")
+Tb:AddLabel("Welcome ,"..game.Players.LocalPlayer.DisplayName)
+Tb:AddLabel("People That Got Whitelisted : 3 User")
 --                                        /{Interface}/\
 local Section = Tab:AddSection({
 	Name = "Hitbox Extender Section" -- The name of the section.
@@ -456,11 +487,14 @@ Tab1:AddToggle({
 
 
 Tab1:AddToggle({
-    Name = "AntiMod {This game dont have any Staff. ,Wip}",
+    Name = "Say Henry line",
     Default = false,
     Callback = function(Value)
-        print("lmao imagine having no Staff")
-    end
+    getgenv().Henry = Value
+        while getgenv().Henry do wait(2)
+          SayHenryLine()
+          end
+end
 })
 
 Tab1:AddButton({
