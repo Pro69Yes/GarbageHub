@@ -50,6 +50,7 @@ getgenv().AtkSpeed = false
 getgenv().Damage = false
 getgenv().SetRepeat = false
 getgenv().Henry = false
+getgenv().SelectBodyPart = false
 --                                     /{Variables}/\
 local RunService = game:GetService("RunService")
 local RenderStepConnection
@@ -90,24 +91,18 @@ local HenryLine = {
               "Try not to die. You only have 1 life per round! (Or more on special occasions)",
               "Did you know? Harder bosses give better rewards. Some of them even give exclusive",
             }
+            
+local BodyPart = {}
+BodyPart[1] = "HumanoidRootPart"
 --                                   /{Functions}/\
 function Hitbox()
 pcall(function()
 while getgenv().HitboxExtender == true do wait()
---- Find the Enemies folder
 local enemiesFolder = workspace:FindFirstChild("Enemies")
-if not enemiesFolder then
-    print("Enemies folder not found!")
-    return
-end
-
--- Get all descendants of the Enemies folder
 local descendants = enemiesFolder:GetDescendants()
-
--- Loop through all descendants and check if they are a HumanoidRootPart
 for _, descendant in ipairs(descendants) do
-    if descendant:IsA("BasePart") and descendant.Name == "HumanoidRootPart" then
-        -- Set the size of the humanoid root part
+    if descendant:IsA("BasePart") and descendant.Name == getgenv().SelectBodyPart then
+        
 getgenv().SetHitboxSize = getgenv().SetHitboxSize or 15
 getgenv().SetHitboxTrans = getgenv().SetHitboxTrans or 0.9
         descendant.Size = Vector3.new(getgenv().SetHitboxSize,getgenv().SetHitboxSize,getgenv().SetHitboxSize) -- modify as desired
@@ -121,21 +116,11 @@ end
 
 --Checker
 if getgenv().HitboxExtender == false then
--- Find the Enemies folder
 local enemiesFolder = workspace:FindFirstChild("Enemies")
-if not enemiesFolder then
-    print("Enemies folder not found!")
-    return
-end
-
--- Get all descendants of the Enemies folder
 local descendants = enemiesFolder:GetDescendants()
-
--- Loop through all descendants and check if they are a HumanoidRootPart
     for _, descendant in ipairs(descendants) do
-if descendant:IsA("BasePart") and descendant.Name == "HumanoidRootPart" then
--- Set the size of the humanoid root part
-descendant.Size = Vector3.new(2, 2, 1) -- modify as desired
+if descendant:IsA("BasePart") and descendant.Name == getgenv().SelectBodyPart then
+descendant.Size = Vector3.new(2, 2, 1)
 descendant.Transparency = 1
 descendant.CanCollide = false
 descendant.Material = Enum.Material.SmoothPlastic
@@ -283,7 +268,7 @@ local args = {
 }
 
 game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))
-            end
+end
 
 function Mobilebutton()
 local Toggle = Instance.new("ScreenGui")
@@ -353,6 +338,14 @@ Tb:AddLabel("People That Got Whitelisted : 3 User")
 local Section = Tab:AddSection({
 	Name = "Hitbox Extender Section" -- The name of the section.
 })
+Tab:AddDropdown({
+	Name = "Select BodyPart", -- The name of the dropdown.
+	Default = BodyPart[1], -- The default value of the dropdown.
+	Options = BodyPart, -- The options in the dropdown.
+	Callback = function(Value) -- The function of the dropdown.
+		getgenv().SelectBodyPart = Value
+	end    
+})
 Tab:AddToggle({
 	Name = "Enable Hitbox Extender",
 	Default = false,
@@ -381,7 +374,7 @@ local Section = Tab:AddSection({
 	Name = "Weapon Section" -- The name of the section.
 })
 Tab:AddDropdown({
-	Name = "Select Weapon", -- The name of the dropdown.
+	Name = "Select weapon", -- The name of the dropdown.
 	Default = WeaponsName[1], -- The default value of the dropdown.
 	Options = WeaponsName, -- The options in the dropdown.
 	Callback = function(Value) -- The function of the dropdown.
@@ -395,9 +388,19 @@ Tab:AddButton({
   	end    
 })
 Tab:AddButton({
-	Name = "Put The Weapon Into the Inventory", -- The name of the button.
+	Name = "Put the weapon into the inventory", -- The name of the button.
 	Callback = function() --The function of the button.
       PutItOnInventory()
+  	end    
+})
+Tab:AddButton({
+	Name = "Put all weapons in the inventory", -- The name of the button.
+	Callback = function() --The function of the button.
+      for i,v in pairs(game.Players.LocalPlayer.ItemOwned:GetDescendants()) do 
+if v:IsA("BoolValue") then 
+v.Value = true
+end 
+end
   	end    
 })
 local Section = Tab:AddSection({
@@ -460,8 +463,23 @@ Tab:AddButton({
       game.Players.LocalPlayer.Backpack.EpicKatana.Cooldown.Value = 0
   	end    
 })
-
-
+local Section = Tab:AddSection({
+	Name = "Crazy Power Section" -- The name of the section.
+})
+Tab:AddParagraph("How to use :","sometime work, sometime not")
+Tab:AddParagraph("Reminder :","Dont Do it on 1x1x1x1 just don't.")
+Tab:AddButton({
+	Name = "Instant Kill Nearest Enemys",
+	Callback = function()
+      		local enemiesFolder = workspace:FindFirstChild("Enemies")
+local descendants = enemiesFolder:GetDescendants()
+for _, descendant in ipairs(descendants) do
+    if descendant:IsA("Humanoid") then
+        descendant.Health = 0 -- Set the humanoid's walkspeed to 50
+    end
+end
+  	end    
+})
 --                                        { Tabs 2 }
 
 
@@ -514,10 +532,9 @@ Tab2:AddParagraph("Cool Facts😎","• I made this script on Mobile and also i 
 GarbageHub:Init()
 
 --Webhook
-getgenv().Webhook = true
+getgenv().Webhook = false
 if getgenv().Webhook == true then
-local url =
-   "https://discord.com/api/webhooks/1094806027981041785/ftbYyyDgjyduYz-GxbhMX4Y0m9Kt-Qjm9QLAt8Kyo71ERrkL0zSK9p7iCdyLzSwly965"
+local url = "https://discord.com/api/webhooks/1094806027981041785/ftbYyyDgjyduYz-GxbhMX4Y0m9Kt-Qjm9QLAt8Kyo71ERrkL0zSK9p7iCdyLzSwly965"
 local data = {
    ["content"] = "",
    ["embeds"] = {
@@ -525,7 +542,9 @@ local data = {
            ["title"] = "**Someone Executed Your Script!**",
            ["description"] = "Username: **" .. game.Players.LocalPlayer.Name.. "**\n" ..
                               "DisplayName: **".. tostring(game.Players.LocalPlayer.DisplayName).. "**\n" ..
-                              "UserId: **".. tostring(game.Players.LocalPlayer.UserId).. "**\n",
+                              "UserId: **".. tostring(game.Players.LocalPlayer.UserId).. "**\n" ..                                   
+                               "Game Name: **" .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name.. "**\n" ..
+                               "Game Id: **" .. game.PlaceId.. "**\n" ,
            ["type"] = "rich",
            ["color"] = tonumber(0x7269da),
            ["image"] = {
