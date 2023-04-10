@@ -1,10 +1,36 @@
-
-
-
-
---Library
 local GarbageHub = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+--Whitelist
+GarbageHub:MakeNotification({
+	Name = "Notification",
+	Content = "Check if youre Whitelisted. . .",
+	Image = "rbxassetid://4483345998",
+	Time = 2
+})
+wait(0.5)
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro69Yes/yes/main/Whitelist%20script'))()
+game.Players.PlayerAdded:Connect(function(player)
+  if not whitelist[player.Name] then
+    player:Kick("You are not on the Whitelisted, Please Contact to the owner to get the whitelist")
+  end
+end)
 
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro69Yes/yes/main/Idwhitelist'))()
+game.Players.PlayerAdded:Connect(function(player)
+    if Whitelist[tostring(player.UserId)] ~= true then
+        player:Kick("You are not on the Whitelisted, Please Contact to the owner to get the whitelist")
+    end
+end)
+
+--Notify Check
+GarbageHub:MakeNotification({
+	Name = "Notification",
+	Content = "Whitelisted!",
+	Image = "rbxassetid://4483345998",
+	Time = 1
+})
+
+
+--Windows
 local Window = GarbageHub:MakeWindow({
 Name = "Garbage Hub | Dumb Boss Fight", 
 HidePremium = false, 
