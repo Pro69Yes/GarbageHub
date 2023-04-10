@@ -1,0 +1,449 @@
+local GarbageHub = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = GarbageHub:MakeWindow({
+Name = "Garbage Hub | Dumb Boss Fight", 
+HidePremium = false, 
+SaveConfig = false, 
+ConfigFolder = "GarbageHubOrion"
+})
+--                                     /{Getgenv}/\
+getgenv().SelectWeapon = false
+getgenv().SetHitboxSize = false
+getgenv().SetHitboxTrans = false
+getgenv().HitboxExtender = false
+getgenv().SetCooldown = false
+getgenv().SetVotesClicks = false
+getgenv().UnfairVote = false
+getgenv().NoSlowdown = false
+getgenv().AtkSpeed = false
+getgenv().Damage = false
+getgenv().SetRepeat = false
+--                                     /{Variables}/\
+local RunService = game:GetService("RunService")
+local RenderStepConnection
+--                                      /{Tables}/\
+local WeaponsName = {}
+WeaponsName[1] = "{ Obtainable Weapons }"
+WeaponsName[2] = "Firebrand"
+WeaponsName[3] = "Venomshank"
+WeaponsName[4] = "WindForce"
+WeaponsName[5] = "IceDagger"
+WeaponsName[6] = "Ghostwalker"
+WeaponsName[7] = "Darkheart"
+WeaponsName[8] = "Illumina"
+WeaponsName[9] = "Katana"
+WeaponsName[10] = "CrimsonKatana"
+WeaponsName[11] = "OcherousKatana"
+WeaponsName[12] = "GoldKatana"
+WeaponsName[13] = "JadeKatana"
+WeaponsName[14] = "BlueKatana"
+WeaponsName[15] = "IrisKatana"
+WeaponsName[16] = "EpicKatana"
+WeaponsName[17] = "{ Event Weapons }"
+WeaponsName[18] = "1xCrown"
+WeaponsName[19] = "NorthPole"
+WeaponsName[20] = "{ Gamepass }"
+WeaponsName[21] = "CashStack"
+WeaponsName[22] = "EpicKatana"
+WeaponsName[23] = "{ Unobtainable }"
+WeaponsName[24] = "BlackIronKatana"
+
+local Vote = {}
+Vote[1] = "Add"
+Vote[2] = "Remove"
+--                                   /{Functions}/\
+function Hitbox()
+pcall(function()
+while getgenv().HitboxExtender == true do wait()
+--- Find the Enemies folder
+local enemiesFolder = workspace:FindFirstChild("Enemies")
+if not enemiesFolder then
+    print("Enemies folder not found!")
+    return
+end
+
+-- Get all descendants of the Enemies folder
+local descendants = enemiesFolder:GetDescendants()
+
+-- Loop through all descendants and check if they are a HumanoidRootPart
+for _, descendant in ipairs(descendants) do
+    if descendant:IsA("BasePart") and descendant.Name == "HumanoidRootPart" then
+        -- Set the size of the humanoid root part
+getgenv().SetHitboxSize = getgenv().SetHitboxSize or 15
+getgenv().SetHitboxTrans = getgenv().SetHitboxTrans or 0.9
+        descendant.Size = Vector3.new(getgenv().SetHitboxSize,getgenv().SetHitboxSize,getgenv().SetHitboxSize) -- modify as desired
+        descendant.Transparency = getgenv().SetHitboxTrans
+        descendant.CanCollide = false
+       descendant.Material = Enum.Material.ForceField
+       descendant.BrickColor = BrickColor.new("Bright red")
+    end
+end
+
+
+--Checker
+if getgenv().HitboxExtender == false then
+-- Find the Enemies folder
+local enemiesFolder = workspace:FindFirstChild("Enemies")
+if not enemiesFolder then
+    print("Enemies folder not found!")
+    return
+end
+
+-- Get all descendants of the Enemies folder
+local descendants = enemiesFolder:GetDescendants()
+
+-- Loop through all descendants and check if they are a HumanoidRootPart
+    for _, descendant in ipairs(descendants) do
+if descendant:IsA("BasePart") and descendant.Name == "HumanoidRootPart" then
+-- Set the size of the humanoid root part
+descendant.Size = Vector3.new(2, 2, 1) -- modify as desired
+descendant.Transparency = 1
+descendant.CanCollide = false
+descendant.Material = Enum.Material.SmoothPlastic
+descendant.BrickColor = BrickColor.new("White")
+end
+end
+
+end
+end
+end)
+end
+
+function EquipWeapon()
+local args = {
+    [1] = getgenv().SelectWeapon
+}
+
+for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+    local playerGui = player:WaitForChild("PlayerGui"):WaitForChild("Main")
+    local shopFrame = playerGui:WaitForChild("ShopFrame"):WaitForChild("Shop")
+    local shopHandler = shopFrame:WaitForChild("ShopHandler")
+    local equip = shopHandler:WaitForChild("Equip")
+    equip:FireServer(unpack(args))
+end
+end
+
+function NoCooldown()
+getgenv().SetCooldown = getgenv().SetCooldown or 20
+game.Players.LocalPlayer.Backpack.EpicKatana.Stats.AbilityCooldown.Value = getgenv().SetCooldown
+end
+
+function PutItOnInventory()
+if getgenv().SelectWeapon == "Firebrand" then
+game.Players.LocalPlayer.ItemOwned.Firebrand.Value = true
+elseif getgenv().SelectWeapon == "WindForce" then
+game.Players.LocalPlayer.ItemOwned.WindForce.Value = true
+elseif getgenv().SelectWeapon == "IceDagger" then
+game.Players.LocalPlayer.ItemOwned("IceDagger").Value = true
+elseif getgenv().SelectWeapon == "Ghostwalker" then
+game.Players.LocalPlayer.ItemOwned.Ghostwalker.Value = true
+elseif getgenv().SelectWeapon == "Darkheart" then
+game.Players.LocalPlayer.ItemOwned.Darkheart.Value = true
+elseif getgenv().SelectWeapon == "Illumina" then
+game.Players.LocalPlayer.ItemOwned.Illumina.Value = true
+elseif getgenv().SelectWeapon == "Katana" then
+game.Players.LocalPlayer.ItemOwned.Katana.Value = true
+elseif getgenv().SelectWeapon == "CrimsonKatana" then
+game.Players.LocalPlayer.ItemOwned.CrimsonKatana.Value = true
+elseif getgenv().SelectWeapon == "OcherousKatana" then
+game.Players.LocalPlayer.ItemOwned.OcherousKatana.Value = true
+elseif getgenv().SelectWeapon == "GoldKatana" then
+game.Players.LocalPlayer.ItemOwned.GoldKatana.Value = true
+elseif getgenv().SelectWeapon == "JadeKatana" then
+game.Players.LocalPlayer.ItemOwned.JadeKatana.Value = true
+elseif getgenv().SelectWeapon == "BlueKatana" then
+game.Players.LocalPlayer.ItemOwned.BlueKatana.Value = true
+elseif getgenv().SelectWeapon == "IrisKatana" then
+game.Players.LocalPlayer.ItemOwned.IrisKatana.Value = true
+elseif getgenv().SelectWeapon == "EpicKatana" then
+game.Players.LocalPlayer.ItemOwned.EpicKatana.Value = true
+elseif getgenv().SelectWeapon == "NorthPole" then
+game.Players.LocalPlayer.ItemOwned.NorthPole.Value = true
+elseif getgenv().SelectWeapon == "1xCrown" then
+game.Players.LocalPlayer.ItemOwned:FindFirstChild("1xCrown").Value = true
+elseif getgenv().SelectWeapon == "BlackIronKatana" then
+game.Players.LocalPlayer.ItemOwned.BlackIronKatana.Value = true
+elseif getgenv().SelectWeapon == "CashStack" then
+game.Players.LocalPlayer.ItemOwned.CashStack.Value = true
+elseif getgenv().SelectWeapon == "Venomshank" then
+game.Players.LocalPlayer.ItemOwned.Venomshank.Value = true
+end
+end 
+
+function VoteRight()
+getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
+local amount = getgenv().SetVotesClicks
+for i=1,amount do
+if getgenv().UnfairVote == "Add" then
+local args = {
+    [1] = 1
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("AddVote"):FireServer(unpack(args))
+elseif getgenv().UnfairVote == "Remove" then
+local args = {
+    [1] = 1
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("RemoveVote"):FireServer(unpack(args))
+end
+end
+end
+
+function VoteMiddle()
+getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
+local amount = getgenv().SetVotesClicks
+for i=1,amount do
+if getgenv().UnfairVote == "Add" then
+local args = {
+    [1] = 2
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("AddVote"):FireServer(unpack(args))
+elseif getgenv().UnfairVote == "Remove" then
+local args = {
+    [1] = 2
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("RemoveVote"):FireServer(unpack(args))
+end
+end
+end
+
+function VoteLeft()
+getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
+local amount = getgenv().SetVotesClicks
+for i=1,amount do
+if getgenv().UnfairVote == "Add" then
+local args = {
+    [1] = 3
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("AddVote"):FireServer(unpack(args))
+elseif getgenv().UnfairVote == "Remove" then
+local args = {
+    [1] = 3
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("RemoveVote"):FireServer(unpack(args))
+end
+end
+end
+
+local function RenderStepFunction()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+end
+
+
+
+function Mobilebutton()
+local Toggle = Instance.new("ScreenGui")
+local UIToggle = Instance.new("TextButton")
+Toggle.Name = "Orion Hider"
+Toggle.Parent = game.CoreGui.Orion
+
+UIToggle.Name = "Toggler"
+UIToggle.Parent = Toggle
+UIToggle.BackgroundColor3 = Color3.fromRGB(0,8,8)
+UIToggle.BackgroundTransparency = 0.660
+UIToggle.Position = UDim2.new(0,890,0 ,0.6)
+UIToggle.Size = UDim2.new(0,50 ,0 ,50)
+UIToggle.Font = Enum.Font.Code
+UIToggle.Text = "Hide/Unhide"
+UIToggle.TextColor3 = Color3.fromRGB(255,255,255)
+UIToggle.TextSize = 8
+UIToggle.Selectable = false
+UIToggle.TextScaled = true
+UIToggle.TextXAlignment = Enum.TextXAlignment.Left
+UIToggle.MouseButton1Click:connect(function()
+if game.CoreGui.Orion.Enabled == true then
+game.CoreGui.Orion.Enabled = false
+elseif game.CoreGui.Orion.Enabled == false then
+game.CoreGui.Orion.Enabled = true
+end
+end)
+end
+
+--             /{ Hide/Unhide Button (Mobile Only) }\
+if game.CoreGui.RobloxGui.FluxusAndroidUI then
+Mobilebutton()
+elseif game.CoreGui.HydrogenGui then
+Mobilebutton()
+end
+
+
+--                                        /{Tabs}/\
+local Tab = Window:MakeTab({
+	Name = "Main", --The name of the tab.
+	Icon = "rbxassetid://4483345998", -- The icon of the tab.
+	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
+})
+local Tab1 = Window:MakeTab({
+	Name = "Misc", --The name of the tab.
+	Icon = "", -- The icon of the tab.
+	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
+})
+local Tab2 = Window:MakeTab({
+	Name = "Credit", --The name of the tab.
+	Icon = "", -- The icon of the tab.
+	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
+})
+--                                        /{Interface}/\
+local Section = Tab:AddSection({
+	Name = "Hitbox Extender Section" -- The name of the section.
+})
+Tab:AddToggle({
+	Name = "Enable Hitbox Extender",
+	Default = false,
+	Callback = function(Value)
+getgenv().HitboxExtender = Value
+		Hitbox()
+	end    
+})
+Tab:AddTextbox({
+	Name = "Set Hitbox Size",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		getgenv().SetHitboxSize = Value
+	end	  
+})
+Tab:AddTextbox({
+	Name = "Set Hitbox Transparancy",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		getgenv().SetHitboxTrans = Value
+	end	  
+})
+local Section = Tab:AddSection({
+	Name = "Weapon Section" -- The name of the section.
+})
+Tab:AddDropdown({
+	Name = "Select Weapon", -- The name of the dropdown.
+	Default = WeaponsName[1], -- The default value of the dropdown.
+	Options = WeaponsName, -- The options in the dropdown.
+	Callback = function(Value) -- The function of the dropdown.
+		getgenv().SelectWeapon = Value
+	end    
+})
+Tab:AddButton({
+	Name = "Equip", -- The name of the button.
+	Callback = function() --The function of the button.
+      EquipWeapon()
+  	end    
+})
+Tab:AddButton({
+	Name = "Put The Weapon Into the Inventory", -- The name of the button.
+	Callback = function() --The function of the button.
+      PutItOnInventory()
+  	end    
+})
+local Section = Tab:AddSection({
+	Name = "Unfair Vote Sections" -- The name of the section.
+})
+Tab:AddDropdown({
+	Name = "Select Mode", -- The name of the dropdown.
+	Default = Vote[1], -- The default value of the dropdown.
+	Options = Vote, -- The options in the dropdown.
+	Callback = function(Value) -- The function of the dropdown.
+		getgenv().UnfairVote = Value
+	end    
+})
+Tab:AddTextbox({
+	Name = "How Much Votes In One Clicks",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		getgenv().SetVotesClicks = Value
+	end	  
+})
+Tab:AddButton({
+	Name = "Vote Right", -- The name of the button.
+	Callback = function() --The function of the button.
+      VoteRight()
+  	end    
+})
+Tab:AddButton({
+	Name = "Vote Middle", -- The name of the button.
+	Callback = function() --The function of the button.
+      VoteMiddle()
+  	end    
+})
+Tab:AddButton({
+	Name = "Vote Left", -- The name of the button.
+	Callback = function() --The function of the button.
+      VoteLeft()
+  	end    
+})
+local Section = Tab:AddSection({
+	Name = "Modified Ability Cooldown Section" -- The name of the section.
+})
+Tab:AddTextbox({
+	Name = "Set Cooldown",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		getgenv().SetCooldown = Value
+	end	  
+})
+Tab:AddButton({
+	Name = "Set The Cooldown", -- The name of the button.
+	Callback = function() --The function of the button.
+      NoCooldown()
+  	end    
+})
+Tab:AddButton({
+	Name = "Force Set Cooldown to 0", -- The name of the button.
+	Callback = function() --The function of the button.
+      game.Players.LocalPlayer.Backpack.EpicKatana.Cooldown.Value = 0
+  	end    
+})
+
+
+--                                        { Tabs 2 }
+
+
+
+Tab1:AddToggle({
+    Name = "No Slowdown",
+    Default = false,
+    Callback = function(Value)
+        pcall(function()
+            getgenv().NoSlowdown = Value
+            if getgenv().NoSlowdown then
+                -- Connect the function to the RenderStepped event
+                RenderStepConnection = RunService.RenderStepped:Connect(RenderStepFunction)
+            else
+                if RenderStepConnection then
+                    RenderStepConnection:Disconnect()
+                    RenderStepConnection = nil
+                end
+            end
+        end)
+    end -- Added missing end statement here
+})
+
+
+Tab1:AddToggle({
+    Name = "AntiMod {This game dont have any Staff. ,Wip}",
+    Default = false,
+    Callback = function(Value)
+        print("lmao imagine having no Staff")
+    end
+})
+
+Tab1:AddButton({
+	Name = "Activate/Unactivate CutScene", -- The name of the button.
+	Callback = function() --The function of the button.
+	if game.ReplicatedStorage.Game.Cutscene.Value == true then
+      game.ReplicatedStorage.Game.Cutscene.Value = false
+elseif game.ReplicatedStorage.Game.Cutscene.Value == false then
+game.ReplicatedStorage.Game.Cutscene.Value = true
+  	end    
+  end
+})
+-- Credit
+Tab2:AddParagraph("Credit🤢","• average funny guy#0855")
+Tab2:AddParagraph("Cool Facts😎","• I made this script on Mobile and also i like to cu-")
+GarbageHub:Init()
