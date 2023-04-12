@@ -1,34 +1,5 @@
 local GarbageHub = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
---Whitelist
-GarbageHub:MakeNotification({
-	Name = "Notification",
-	Content = "Check if youre Whitelisted. . .",
-	Image = "rbxassetid://4483345998",
-	Time = 2
-})
-wait(0.5)
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro69Yes/yes/main/Whitelist%20script'))()
-game.Players.PlayerAdded:Connect(function(player)
-  if not whitelist[player.Name] then
-    player:Kick("You are not on the Whitelisted, Please Contact to the owner to get the whitelist")
-  end
-end)
-
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Pro69Yes/yes/main/Idwhitelist'))()
-game.Players.PlayerAdded:Connect(function(player)
-    if Whitelist[tostring(player.UserId)] ~= true then
-        player:Kick("You are not on the Whitelisted, Please Contact to the owner to get the whitelist")
-    end
-end)
-
---Notify Check
-GarbageHub:MakeNotification({
-	Name = "Notification",
-	Content = "Whitelisted!",
-	Image = "rbxassetid://4483345998",
-	Time = 1
-})
-
+--Blacklist
 
 --Windows
 local Window = GarbageHub:MakeWindow({
@@ -45,15 +16,16 @@ getgenv().HitboxExtender = false
 getgenv().SetCooldown = false
 getgenv().SetVotesClicks = false
 getgenv().UnfairVote = false
-getgenv().NoSlowdown = false
 getgenv().AtkSpeed = false
 getgenv().Damage = false
 getgenv().SetRepeat = false
 getgenv().Henry = false
 getgenv().SelectBodyPart = false
+getgenv().Walkspeed = false
+getgenv().NoSlowdown = false
+getgenv().SetWalkspeed = false
 --                                     /{Variables}/\
 local RunService = game:GetService("RunService")
-local RenderStepConnection
 --                                      /{Tables}/\
 local WeaponsName = {}
 WeaponsName[1] = "{ Obtainable Weapons }"
@@ -254,8 +226,14 @@ end
 end
 end
 
-local function RenderStepFunction()
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+function walkspeed()
+getgenv().SetWalkspeed = getgenv().SetWalkspeed or 16
+          while getgenv().Walkspeed do wait()
+          game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = getgenv().SetWalkspeed
+if getgenv().Walkspeed == false then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+end
+end
 end
 
 function SayHenryLine()
@@ -269,6 +247,8 @@ local args = {
 
 game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))
 end
+
+
 
 function Mobilebutton()
 local Toggle = Instance.new("ScreenGui")
@@ -370,8 +350,9 @@ Tab:AddTextbox({
 		getgenv().SetHitboxTrans = Value
 	end	  
 })
+
 local Section = Tab:AddSection({
-	Name = "Weapon Section" -- The name of the section.
+	Name = "Weapon Section [Fe]" -- The name of the section.
 })
 Tab:AddDropdown({
 	Name = "Select weapon", -- The name of the dropdown.
@@ -404,7 +385,7 @@ end
   	end    
 })
 local Section = Tab:AddSection({
-	Name = "Unfair Vote Sections" -- The name of the section.
+	Name = "Unfair Vote Sections [Fe]" -- The name of the section.
 })
 Tab:AddDropdown({
 	Name = "Select Mode", -- The name of the dropdown.
@@ -441,7 +422,7 @@ Tab:AddButton({
   	end    
 })
 local Section = Tab:AddSection({
-	Name = "Modified Ability Cooldown Section" -- The name of the section.
+	Name = "Modified Ability Cooldown Section [Fe]" -- The name of the section.
 })
 Tab:AddTextbox({
 	Name = "Set Cooldown",
@@ -466,8 +447,7 @@ Tab:AddButton({
 local Section = Tab:AddSection({
 	Name = "Crazy Power Section" -- The name of the section.
 })
-Tab:AddParagraph("How to use :","sometime work, sometime not")
-Tab:AddParagraph("Reminder :","Dont Do it on 1x1x1x1 just don't.")
+Tab:AddParagraph("How to use :","click the button then go to the Enemys [Fe]")
 Tab:AddButton({
 	Name = "Instant Kill Nearest Enemys",
 	Callback = function()
@@ -481,29 +461,32 @@ end
   	end    
 })
 --                                        { Tabs 2 }
-
-
-
-Tab1:AddToggle({
-    Name = "No Slowdown",
-    Default = false,
-    Callback = function(Value)
-        pcall(function()
-            getgenv().NoSlowdown = Value
-            if getgenv().NoSlowdown then
-                -- Connect the function to the RenderStepped event
-                RenderStepConnection = RunService.RenderStepped:Connect(RenderStepFunction)
-            else
-                if RenderStepConnection then
-                    RenderStepConnection:Disconnect()
-                    RenderStepConnection = nil
-                end
-            end
-        end)
-    end -- Added missing end statement here
+local Section = Tab1:AddSection({
+	Name = "Walkspeed Section" -- The name of the section.
+})
+Tab1:AddTextbox({
+	Name = "Set Walkspeed",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		getgenv().SetWalkspeed = Value
+	end	  
 })
 
+Tab1:AddToggle({
+    Name = "Set the walkspeed value {Works for No slowdow}",
+    Default = false,
+    Callback = function(Value)
+    getgenv().Walkspeed = Value
+        pcall(function()
+            walkspeed()
+        end)
+    end
+})
 
+local Section = Tab1:AddSection({
+	Name = "Misc Section" -- The name of the section.
+})
 Tab1:AddToggle({
     Name = "Say Henry line",
     Default = false,
