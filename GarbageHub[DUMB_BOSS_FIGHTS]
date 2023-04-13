@@ -24,32 +24,15 @@ getgenv().SetWalkspeed = false
 
 --                                     /{Variables}/\
 local RunService = game:GetService("RunService")
---                                      /{Tables}/\
-local WeaponsName = {}
-WeaponsName[1] = "{ Obtainable Weapons }"
-WeaponsName[2] = "Firebrand"
-WeaponsName[3] = "Venomshank"
-WeaponsName[4] = "WindForce"
-WeaponsName[5] = "IceDagger"
-WeaponsName[6] = "Ghostwalker"
-WeaponsName[7] = "Darkheart"
-WeaponsName[8] = "Illumina"
-WeaponsName[9] = "Katana"
-WeaponsName[10] = "CrimsonKatana"
-WeaponsName[11] = "OcherousKatana"
-WeaponsName[12] = "GoldKatana"
-WeaponsName[13] = "JadeKatana"
-WeaponsName[14] = "BlueKatana"
-WeaponsName[15] = "IrisKatana"
-WeaponsName[16] = "EpicKatana"
-WeaponsName[17] = "{ Event Weapons }"
-WeaponsName[18] = "1xCrown"
-WeaponsName[19] = "NorthPole"
-WeaponsName[20] = "{ Gamepass }"
-WeaponsName[21] = "CashStack"
-WeaponsName[22] = "EpicKatana"
-WeaponsName[23] = "{ Unobtainable }"
-WeaponsName[24] = "BlackIronKatana"
+--                                      /{Tables}/
+local WeaponsNameV2 = {}
+for _, child in ipairs(game.Players.LocalPlayer.ItemOwned:GetDescendants()) do
+    if child:IsA("BoolValue") then
+        table.insert(WeaponsNameV2, child.Name)
+    end
+end
+
+
 
 local Vote = {}
 Vote[1] = "Add"
@@ -335,7 +318,7 @@ getgenv().HitboxExtender = Value
 	end    
 })
 Tab:AddTextbox({
-	Name = "Set Hitbox Size",
+	Name = "Change Size of Hitbox",
 	Default = "",
 	TextDisappear = true,
 	Callback = function(Value)
@@ -343,7 +326,7 @@ Tab:AddTextbox({
 	end	  
 })
 Tab:AddTextbox({
-	Name = "Set Hitbox Transparancy",
+	Name = "Set Transparency of Hitbox",
 	Default = "",
 	TextDisappear = true,
 	Callback = function(Value)
@@ -353,9 +336,9 @@ Tab:AddTextbox({
 local Section = Tab:AddSection({
 	Name = "Crazy Power Section" -- The name of the section.
 })
-Tab:AddParagraph("How to use :","click the button then go to the Enemys [Fe]")
+Tab:AddParagraph("How to use :","Click the button and go to the enemies [Fe]")
 Tab:AddButton({
-	Name = "Instant Kill Nearest Enemys [Unstable/Buggy]",
+	Name = "Instantly Kill Nearest Enemies [Unstable/Buggy]",
 	Callback = function()
       		local enemiesFolder = workspace:FindFirstChild("Enemies")
 local descendants = enemiesFolder:GetDescendants()
@@ -366,14 +349,14 @@ for _, descendant in ipairs(descendants) do
 end
   	end    
 })
-Tab:AddParagraph("How to use 2 :","u need to check using hitbox expander then check if the enemies do weird stuff like shift crazy or something")
+Tab:AddParagraph("How to use 2 :","use a hitbox expander to check if enemies are doing anything unusual, such as shifting erratically or behaving strangely. Then, click the buttons.")
 local Section = Tab:AddSection({
 	Name = "Weapon Section [Fe]" -- The name of the section.
 })
-Tab:AddDropdown({
+local SelectedWeapon = Tab:AddDropdown({
 	Name = "Select weapon", -- The name of the dropdown.
-	Default = WeaponsName[1], -- The default value of the dropdown.
-	Options = WeaponsName, -- The options in the dropdown.
+	Default = WeaponsNameV2[1], -- The default value of the dropdown.
+	Options = WeaponsNameV2, -- The options in the dropdown.
 	Callback = function(Value) -- The function of the dropdown.
 		getgenv().SelectWeapon = Value
 	end    
@@ -385,13 +368,13 @@ Tab:AddButton({
   	end    
 })
 Tab:AddButton({
-	Name = "Put the weapon into the inventory", -- The name of the button.
+	Name = "Add the weapon to the inventory", -- The name of the button.
 	Callback = function() --The function of the button.
       PutItOnInventory()
   	end    
 })
 Tab:AddButton({
-	Name = "Put all weapons in the inventory", -- The name of the button.
+	Name = "Put all weapons in inventory", -- The name of the button.
 	Callback = function() --The function of the button.
       for i,v in pairs(game.Players.LocalPlayer.ItemOwned:GetDescendants()) do 
 if v:IsA("BoolValue") then 
@@ -401,7 +384,7 @@ end
   	end    
 })
 local Section = Tab:AddSection({
-	Name = "Unfair Vote Sections [Fe]" -- The name of the section.
+	Name = "Unfair Votes Sections [Fe]" -- The name of the section.
 })
 Tab:AddDropdown({
 	Name = "Select Mode", -- The name of the dropdown.
@@ -438,10 +421,11 @@ Tab:AddButton({
   	end    
 })
 local Section = Tab:AddSection({
-	Name = "Modified Ability Cooldown Section [Fe]" -- The name of the section.
+	Name = "Modified Cooldown Time for Ability Section [Fe]" -- The name of the section.
 })
+local CooldownChecker = Tab:AddLabel("Current Cooldown Value : 20")
 Tab:AddTextbox({
-	Name = "Set Cooldown",
+	Name = "Set the cooldown for the ability",
 	Default = "",
 	TextDisappear = true,
 	Callback = function(Value)
@@ -449,13 +433,13 @@ Tab:AddTextbox({
 	end	  
 })
 Tab:AddButton({
-	Name = "Set The Cooldown", -- The name of the button.
+	Name = "Set the cooldown timer", -- The name of the button.
 	Callback = function() --The function of the button.
       NoCooldown()
   	end    
 })
 Tab:AddButton({
-	Name = "Force Set Cooldown to 0", -- The name of the button.
+	Name = "Force the cooldown to be set to 0", -- The name of the button.
 	Callback = function() --The function of the button.
       game.Players.LocalPlayer.Backpack.EpicKatana.Cooldown.Value = 0
   	end    
@@ -465,7 +449,7 @@ local Section = Tab1:AddSection({
 	Name = "Walkspeed Section" -- The name of the section.
 })
 Tab1:AddTextbox({
-	Name = "Set Walkspeed",
+	Name = "Set Player Walkspeed",
 	Default = "",
 	TextDisappear = true,
 	Callback = function(Value)
@@ -473,7 +457,7 @@ Tab1:AddTextbox({
 	end	  
 })
 Tab1:AddToggle({
-    Name = "Set the walkspeed value {Works for No slowdow}",
+    Name = "Set the walk speed value (works for no slowdown).",
     Default = false,
     Callback = function(Value)
     getgenv().Walkspeed = Value
@@ -498,7 +482,7 @@ Tab1:AddToggle({
 end
 })
 Tab1:AddButton({
-	Name = "Activate/Unactivate CutScene", -- The name of the button.
+	Name = "Enable/Disable Cutscene", -- The name of the button.
 	Callback = function() --The function of the button.
 	if game.ReplicatedStorage.Game.Cutscene.Value == true then
       game.ReplicatedStorage.Game.Cutscene.Value = false
@@ -510,6 +494,18 @@ game.ReplicatedStorage.Game.Cutscene.Value = true
 -- Credit
 Tab2:AddParagraph("Credit🤢","• average funny guy#0855")
 Tab2:AddParagraph("Cool Facts😎","• I made this script on Mobile and also i like to cu-")
+
+while true do
+  local success, cooldownValue = pcall(function()
+    return game.Players.LocalPlayer.Backpack.EpicKatana.Stats.AbilityCooldown.Value
+  end)
+
+  if success then
+    CooldownChecker:Set("Current Cooldown Value : " .. cooldownValue)
+  end
+
+  wait(0.5) -- wait for 0.5 seconds before checking the cooldown value again
+end
 
 GarbageHub:Init()
 
