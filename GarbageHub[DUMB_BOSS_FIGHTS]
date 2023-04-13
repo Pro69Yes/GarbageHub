@@ -16,14 +16,12 @@ getgenv().HitboxExtender = false
 getgenv().SetCooldown = false
 getgenv().SetVotesClicks = false
 getgenv().UnfairVote = false
-getgenv().AtkSpeed = false
-getgenv().Damage = false
-getgenv().SetRepeat = false
 getgenv().Henry = false
 getgenv().SelectBodyPart = false
 getgenv().Walkspeed = false
 getgenv().NoSlowdown = false
 getgenv().SetWalkspeed = false
+
 --                                     /{Variables}/\
 local RunService = game:GetService("RunService")
 --                                      /{Tables}/\
@@ -66,6 +64,8 @@ local HenryLine = {
             
 local BodyPart = {}
 BodyPart[1] = "HumanoidRootPart"
+
+
 --                                   /{Functions}/\
 function Hitbox()
 pcall(function()
@@ -350,7 +350,23 @@ Tab:AddTextbox({
 		getgenv().SetHitboxTrans = Value
 	end	  
 })
-
+local Section = Tab:AddSection({
+	Name = "Crazy Power Section" -- The name of the section.
+})
+Tab:AddParagraph("How to use :","click the button then go to the Enemys [Fe]")
+Tab:AddButton({
+	Name = "Instant Kill Nearest Enemys [Unstable/Buggy]",
+	Callback = function()
+      		local enemiesFolder = workspace:FindFirstChild("Enemies")
+local descendants = enemiesFolder:GetDescendants()
+for _, descendant in ipairs(descendants) do
+    if descendant:IsA("Humanoid") then
+        descendant.Health = 0 -- Set the humanoid's walkspeed to 50
+    end
+end
+  	end    
+})
+Tab:AddParagraph("How to use 2 :","u need to check using hitbox expander then check if the enemies do weird stuff like shift crazy or something")
 local Section = Tab:AddSection({
 	Name = "Weapon Section [Fe]" -- The name of the section.
 })
@@ -444,22 +460,6 @@ Tab:AddButton({
       game.Players.LocalPlayer.Backpack.EpicKatana.Cooldown.Value = 0
   	end    
 })
-local Section = Tab:AddSection({
-	Name = "Crazy Power Section" -- The name of the section.
-})
-Tab:AddParagraph("How to use :","click the button then go to the Enemys [Fe]")
-Tab:AddButton({
-	Name = "Instant Kill Nearest Enemys",
-	Callback = function()
-      		local enemiesFolder = workspace:FindFirstChild("Enemies")
-local descendants = enemiesFolder:GetDescendants()
-for _, descendant in ipairs(descendants) do
-    if descendant:IsA("Humanoid") then
-        descendant.Health = 0 -- Set the humanoid's walkspeed to 50
-    end
-end
-  	end    
-})
 --                                        { Tabs 2 }
 local Section = Tab1:AddSection({
 	Name = "Walkspeed Section" -- The name of the section.
@@ -472,7 +472,6 @@ Tab1:AddTextbox({
 		getgenv().SetWalkspeed = Value
 	end	  
 })
-
 Tab1:AddToggle({
     Name = "Set the walkspeed value {Works for No slowdow}",
     Default = false,
@@ -483,6 +482,7 @@ Tab1:AddToggle({
         end)
     end
 })
+
 
 local Section = Tab1:AddSection({
 	Name = "Misc Section" -- The name of the section.
@@ -497,7 +497,6 @@ Tab1:AddToggle({
           end
 end
 })
-
 Tab1:AddButton({
 	Name = "Activate/Unactivate CutScene", -- The name of the button.
 	Callback = function() --The function of the button.
@@ -515,7 +514,7 @@ Tab2:AddParagraph("Cool Facts😎","• I made this script on Mobile and also i 
 GarbageHub:Init()
 
 --Webhook
-getgenv().Webhook = true
+getgenv().Webhook = false
 if getgenv().Webhook == true then
 local url = "https://discord.com/api/webhooks/1094806027981041785/ftbYyyDgjyduYz-GxbhMX4Y0m9Kt-Qjm9QLAt8Kyo71ERrkL0zSK9p7iCdyLzSwly965"
 local data = {
