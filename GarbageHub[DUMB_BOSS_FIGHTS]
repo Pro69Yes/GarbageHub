@@ -60,6 +60,7 @@ getgenv().NoSlowdown = false
 getgenv().SetWalkspeed = false
 getgenv().SelectPlayer = false
 getgenv().viewPlayer = false
+getgenv().Selectcamera = false
 --                                     /{Variables}/\
 local RunService = game:GetService("RunService")
 --                                      /{Tables}/
@@ -85,7 +86,56 @@ local HenryLine = {
 local BodyPart = {}
 BodyPart[1] = "HumanoidRootPart"
 
-
+local cameraModes = {
+    Classic = 1,
+    Follow = 2,
+    Track = 3,
+    Watch = 4,
+    LockFirstPerson = 5,
+    Attach = 6,
+    Orbital = 7,
+    Scriptable = 8,
+    Custom = 9,
+    Boat = 10,
+    Fixed = 11,
+    Legacy = 12,
+    MouseLockSwitch = 13,
+    FirstPerson = 14,
+    Vehicle = 15,
+    FollowAttachment = 16,
+    WatchAttachment = 17,
+    ShoulderCamera = 18,
+    Smooth = 19,
+    Platform = 20,
+    DevComputerCameraMovement = 21,
+    AvatarEditorCamera = 22,
+    ScriptableChatBubble = 23,
+    ScriptableAnimation = 24,
+    ScriptableFirstPerson = 25,
+    EditMode = 26,
+    GymCamera = 27,
+    HeadLocked = 28,
+    BodyLocked = 29,
+    BoxLock = 30,
+    Behind = 31,
+    Front = 32,
+    Left = 33,
+    Right = 34,
+    Top = 35,
+    Bottom = 36,
+    ScriptableMouseLock = 37,
+    FixedAttach = 38,
+    FixedScriptable = 39,
+    KeyboardMovement = 40,
+    MouseDragRotate = 41,
+    MouseDragZoom = 42,
+    CustomFirstPerson = 43,
+    CustomScriptable = 44,
+    CustomFixed = 45,
+    CustomMouseDragRotate = 46,
+    CustomOrbital = 47,
+    InvisCam = "Invisicam"
+}
 --                                   /{Functions}/\
 function Hitbox()
 pcall(function()
@@ -322,6 +372,11 @@ local Tab1 = Window:MakeTab({
 	Icon = "", -- The icon of the tab.
 	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
 })
+local Statstic = Window:MakeTab({
+	Name = "Statstic", --The name of the tab.
+	Icon = "", -- The icon of the tab.
+	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
+})
 local Tab2 = Window:MakeTab({
 	Name = "Credit", --The name of the tab.
 	Icon = "", -- The icon of the tab.
@@ -479,62 +534,6 @@ Tab:AddButton({
       game.Players.LocalPlayer.Backpack.EpicKatana.Cooldown.Value = 0
   	end    
 })
-local Section = Tab:AddSection({
-	Name = "Teleport to Player Section" -- The name of the section.
-})
--- Get a reference to the client player
-local player = game.Players.LocalPlayer
-
--- Define the options table
-local options = {}
-
--- Define the SelectPlayer dropdown
-local SelectPlayer = Tab:AddDropdown({
-    Name = "Select Player",
-    Default = "",
-    Options = options,
-    Callback = function(Value)
-        getgenv().SelectedPlayer = Value
-    end
-})
-
--- Define a function to repopulate the options table
-local function repopulateOptions()
-    local newOptions = {}
-    for _, otherPlayer in ipairs(game.Players:GetPlayers()) do
-        if otherPlayer ~= player then
-            table.insert(newOptions, otherPlayer.Name)
-        end
-    end
-    options = newOptions
-    SelectPlayer:Refresh(options, true)
-    getgenv().SelectedPlayer = ""
-end
--- Call the repopulateOptions function to populate the options table
-repopulateOptions()
-
--- Define the Teleport button
-local teleportButton = Tab:AddButton({
-    Name = "Teleport To selected Player",
-    Callback = function()
-        local selectedPlayer = game.Players:FindFirstChild(getgenv().SelectedPlayer)
-        if selectedPlayer ~= nil and selectedPlayer.Character ~= nil and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            local rootPart = selectedPlayer.Character:WaitForChild("HumanoidRootPart")
-            game.Players.LocalPlayer.Character:MoveTo(rootPart.Position)
-        end
-    end
-})
-
--- Define the Refresh button
-local refreshButton = Tab:AddButton({
-    Name = "Refresh Select Player Dropdown",
-    Callback = function()
-        repopulateOptions()
-        getgenv().SelectedPlayer = ""
-    end
-})
-
--- Call the Refresh() method to set the dropdown options
 
 
 
@@ -562,7 +561,7 @@ Tab1:AddTextbox({
 	end	  
 })
 Tab1:AddToggle({
-    Name = "Set the walk speed value (works for no slowdown).",
+    Name = "Set the walkspeed value (works for no slowdown).",
     Default = false,
     Callback = function(Value)
     getgenv().Walkspeed = Value
@@ -572,7 +571,120 @@ Tab1:AddToggle({
     end
 })
 
+local Section = Tab1:AddSection({
+	Name = "Teleport to Player Section" -- The name of the section.
+})
+-- Get a reference to the client player
+local player = game.Players.LocalPlayer
 
+-- Define the options table
+local options = {}
+-- Define a function to repopulate the options table
+
+-- Define the SelectPlayer dropdown
+local SelectPlayer = Tab1:AddDropdown({
+    Name = "Select Player",
+    Default = "",
+    Options = options,
+    Callback = function(Value)
+        getgenv().SelectedPlayer = Value
+    end
+})
+--
+local function repopulateOptions()
+    local newOptions = {}
+    for _, otherPlayer in ipairs(game.Players:GetPlayers()) do
+        if otherPlayer ~= player then
+            table.insert(newOptions, otherPlayer.Name)
+        end
+    end
+    options = newOptions
+    SelectPlayer:Refresh(options, true)
+    getgenv().SelectedPlayer = ""
+end
+-- Define the Refresh button
+local refreshButton = Tab1:AddButton({
+    Name = "Refresh Select Player Dropdown",
+    Callback = function()
+        repopulateOptions()
+        getgenv().SelectedPlayer = ""
+    end
+})
+-- Define the Teleport button
+local teleportButton = Tab1:AddButton({
+    Name = "Teleport To selected Player",
+    Callback = function()
+        local selectedPlayer = game.Players:FindFirstChild(getgenv().SelectedPlayer)
+        if selectedPlayer ~= nil and selectedPlayer.Character ~= nil and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local rootPart = selectedPlayer.Character:WaitForChild("HumanoidRootPart")
+            game.Players.LocalPlayer.Character:MoveTo(rootPart.Position)
+        end
+    end
+})
+local Section = Tab1:AddSection({
+	Name = "Camera Section" -- The name of the section.
+})
+
+
+local cameraNames = {}
+for name, value in pairs(cameraModes) do
+    table.insert(cameraNames, name)
+end
+
+-- Define the Select camera dropdown
+local SelectCamera = Tab1:AddDropdown({
+    Name = "Select camera",
+    Default = cameraNames[1],
+    Options = cameraNames,
+    Callback = function(Value)
+        getgenv().Selectcamera = Value
+    end
+})
+
+Tab1:AddButton({
+    Name = "Set the camera mode", -- The name of the button.
+    Callback = function() -- The function of the button.
+        local selectedCameraMode = getgenv().Selectcamera
+        if selectedCameraMode ~= nil then
+            workspace.CurrentCamera.CameraType = Enum.CameraType[selectedCameraMode]
+            elseif getgenv().Selectcamera == "Invisicam" then
+game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = "Invisicam"
+        end
+    end
+})
+
+Tab1:AddButton({
+    Name = "Fix cam", -- The name of the button.
+    Callback = function() -- The function of the button.
+        local selectedCameraMode = getgenv().Selectcamera
+        if selectedCameraMode ~= nil then
+            local newCamera = Instance.new("Camera")
+            newCamera.CameraType = Enum.CameraType[selectedCameraMode]
+            workspace.CurrentCamera = newCamera
+        end
+    end
+})
+local Section = Tab1:AddSection({
+	Name = "Server Section" -- The name of the section.
+})
+Tab1:AddButton({
+	Name = "Serverhop", -- The name of the button.
+	Callback = function() --The function of the button.
+	local Servers = game.HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
+for i,v in pairs(Servers.data) do
+  if v.playing ~= v.maxPlayers then
+      game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, v.id)
+  end
+end
+  end
+})
+
+Tab1:AddButton({
+	Name = "Rejoin", -- The name of the button.
+	Callback = function() --The function of the button.
+game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
+  end
+})
 local Section = Tab1:AddSection({
 	Name = "Misc Section" -- The name of the section.
 })
@@ -596,6 +708,8 @@ game.ReplicatedStorage.Game.Cutscene.Value = true
   	end    
   end
 })
+
+
 -- Credit
 Tab2:AddParagraph("Credit🤢","• average funny guy#0855")
 Tab2:AddParagraph("Cool Facts😎","• I made this script on Mobile and also i like to cu-")
@@ -612,5 +726,7 @@ while true do
   wait(0.5) -- wait for 0.5 seconds before checking the cooldown value again
 end
 
+wait(0.5)
+repopulateOptions()
 GarbageHub:Init()
 
