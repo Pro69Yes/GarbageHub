@@ -34,7 +34,7 @@ end
 
 
 
-local GarbageHub = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local GarbageHub = loadstring(game:HttpGet(('https://raw.githubusercontent.com/technorav3nn/Osiris/main/source.lua')))()
 --Blacklist
 
 --Windows
@@ -330,9 +330,7 @@ local Tab2 = Window:MakeTab({
 local Section = Tb:AddSection({
 	Name = "Home Section" -- The name of the section.
 })
-Tb:AddLabel("Youre Whitelisted!")
-Tb:AddLabel("Welcome ,"..game.Players.LocalPlayer.DisplayName)
-Tb:AddLabel("People That Got Whitelisted : 3 User")
+Tb:AddLabel("Welcome , "..game.Players.LocalPlayer.DisplayName)
 --                                        /{Interface}/\
 local Section = Tab:AddSection({
 	Name = "Hitbox Extender Section" -- The name of the section.
