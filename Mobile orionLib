@@ -596,7 +596,13 @@ function OrionLib:MakeWindow(WindowConfig)
 	local ThreeDotsBtn = SetChildren(SetProps(MakeElement("Button"), {
 		Size = UDim2.new(0.5, 0, 1, 50),
 		BackgroundTransparency = 1,
-	}), {})
+	}), {
+		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7734053495"), {
+			Position = UDim2.new(0, 9, 0, 6),
+			Size = UDim2.new(0, 18, 0, 18),
+			Name = "Ico"
+		}), "Text")
+	})
 
 	local MinimizeBtn = SetChildren(SetProps(MakeElement("Button"), {
 		Size = UDim2.new(0.5, 0, 1, 0),
@@ -684,13 +690,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		}),
 	}), "Second")
 	
-	local SettingsFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 7), {
-		Size = UDim2.new(0.5, 0, 1, 0),
-		BackgroundTransparency = 1
-	}), {
-		AddThemeObject(MakeElement("Stroke"), "Stroke"),
-		ThreeDotsBtn
-	}), "Second")
+	
 
 	local WindowName = AddThemeObject(SetProps(MakeElement("Label", WindowConfig.Name, 14), {
 		Size = UDim2.new(1, -30, 2, 0),
