@@ -45,9 +45,8 @@ local OrionLib = {
 	Folder = nil,
 	SaveCfg = false,
 	Settings = {
-		LockDragging = true,
+		LockDragging = false,
 		TweenDragSpeed = 60,
-		CloseKeyBind = Enum.KeyCode.RightShift
 	}
 }
 
@@ -606,27 +605,21 @@ function OrionLib:MakeWindow(WindowConfig)
 	})
 
 	local MinimizeBtn = SetChildren(SetProps(MakeElement("Button"), {
-		Size = UDim2.new(0.5, 0, 1, 0),
-		Position = UDim2.new(0.5, 0, 0, 0),
-	}), {
-		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7072719338"), {
-			Position = UDim2.new(0, 9, 0, 6),
-			Size = UDim2.new(0, 18, 0, 18),
-			Name = "Ico"
-		}), "Text")
-	})
+    Size = UDim2.new(0.5, 0, 1, 0),
+    Position = UDim2.new(0.5, 0, 0, 0),
+}), {})
+		
+local MinimizeBtn2 = SetChildren(SetProps(MakeElement("Button"), {
+    Size = UDim2.new(0.5, 0, 1, 0),
+    BackgroundTransparency = 1
+}), {
+    AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7072719338"), {
+        Position = UDim2.new(0, 9, 0, 6),
+        Size = UDim2.new(0, 18, 0, 18),
+        Name = "Ico"
+    }), "Text")
+})
 
-	
-	local MinimizeBtn2 = SetChildren(SetProps(MakeElement("Button"), {
-		Size = UDim2.new(0.5, 0, 1, 0),
-		BackgroundTransparency = 1
-	}), {
-		AddThemeObject(SetProps(MakeElement("Image", "rbxassetid://7072719338"), {
-			Position = UDim2.new(0, 9, 0, 6),
-			Size = UDim2.new(0, 18, 0, 18),
-			Name = "Ico"
-		}), "Text")
-	})
 
 	local DragPoint = SetProps(MakeElement("TFrame"), {
 		Size = UDim2.new(1, 0, 0, 50)
@@ -732,12 +725,12 @@ function OrionLib:MakeWindow(WindowConfig)
 			WindowName,
 			WindowTopBarLine,
 			AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 7), {
-				Size = UDim2.new(0, 70, 0, 30),
+				Size = UDim2.new(0,0,0,0),
 				Position = UDim2.new(1, -90, 0, 10)
 			}), {
 				AddThemeObject(MakeElement("Stroke"), "Stroke"),
 				AddThemeObject(SetProps(MakeElement("Frame"), {
-					Size = UDim2.new(0, 1, 1, 0),
+					Size = UDim2.new(0,0,0,0),
 					Position = UDim2.new(0.5, 0, 0, 0)
 				}), "Stroke"), 
 				CloseBtn,
