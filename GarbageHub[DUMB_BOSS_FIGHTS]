@@ -37,8 +37,9 @@ end
 
 
 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zntly/highlight-esp/main/esp.lua"))()
+
 local GarbageHub = loadstring(game:HttpGet(('https://raw.githubusercontent.com/technorav3nn/Osiris/main/source.lua')))()
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
 --Windows
 local Window = GarbageHub:MakeWindow({
 Name = "Garbage Hub | Dumb Boss Fight", 
@@ -63,6 +64,7 @@ getgenv().SelectPlayer = false
 getgenv().viewPlayer = false
 getgenv().Selectcamera = false
 nowe = false
+
 --                                     /{Variables}/\
 local RunService = game:GetService("RunService")
 speeds = 1
@@ -196,6 +198,7 @@ for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
     equip:FireServer(unpack(args))
 end
 end
+
 
 function NoCooldown()
 getgenv().SetCooldown = getgenv().SetCooldown or 20
@@ -430,6 +433,7 @@ local Section = Tab:AddSection({
 	Name = "Crazy Power Section" -- The name of the section.
 })
 Tab:AddParagraph("How to use :","Click the button and go to the enemies [Fe]")
+Tab:AddParagraph("How to use 2 :","use a hitbox expander to check if enemies are doing anything unusual, such as shifting erratically or behaving strangely. Then, click the buttons.")
 Tab:AddButton({
 	Name = "Instantly Kill Nearest Enemies [Unstable/Buggy]",
 	Callback = function()
@@ -442,7 +446,100 @@ for _, descendant in ipairs(descendants) do
 end
   	end    
 })
-Tab:AddParagraph("How to use 2 :","use a hitbox expander to check if enemies are doing anything unusual, such as shifting erratically or behaving strangely. Then, click the buttons.")
+ local EspSection = Tab:AddSection({
+    Name = "Esp Section"
+})
+
+EspEnabler = false
+SelectWhoEsp = " "
+
+Tab:AddDropdown({
+    Name = "Select WhoTo",
+    Default = " ",
+    Options = {"Enemies", "Players", "Both"},
+    Callback = function(Value)
+        SelectWhoEsp = Value
+    end    
+})
+
+local function createEsp(highlightColor, adornee)
+    local Esp = Instance.new("Highlight")
+    Esp.Parent = game.CoreGui.EspHolder
+    Esp.FillColor = highlightColor
+    Esp.FillTransparency = 0.87
+    Esp.OutlineColor = highlightColor
+    Esp.OutlineTransparency = 0.8
+    Esp.Adornee = adornee
+    Esp.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    return Esp
+end
+
+Tab:AddToggle({
+    Name = "Enable Esp",
+    Default = false,
+    Callback = function(Value)
+        EspEnabler = Value
+        if EspEnabler then
+            local Holder = game.CoreGui:FindFirstChild("EspHolder") or Instance.new("Folder")
+            Holder.Name = "EspHolder"
+            Holder.Parent = game.CoreGui    
+            while EspEnabler do
+                if SelectWhoEsp == "Enemies" then
+                    for _, chr in pairs(game.Workspace.Enemies:GetDescendants()) do
+                        if chr:IsA("Model") and chr:FindFirstChild("EnemyHumanoid") then
+                            local Esp = Holder:FindFirstChild(chr.Name) or createEsp(Color3.new(1,0,0), chr)
+                            Esp.Name = chr.Name
+                        end
+                    end
+                elseif SelectWhoEsp == "Players" then
+                    for _,v in pairs(game.Players:GetChildren()) do
+                        local chr = v.Character
+                        if chr ~= nil then
+                            local Esp = Holder:FindFirstChild(v.Name) or createEsp(Color3.new(1,1,1), chr)
+                            Esp.Name = v.Name
+                        end
+                    end
+                elseif SelectWhoEsp == "Both" then
+                    for _,v in pairs(game.Players:GetChildren()) do
+                        local chr = v.Character
+                        if chr ~= nil then
+                            local Esp = Holder:FindFirstChild(v.Name) or createEsp(Color3.new(1,1,1), chr)
+                            Esp.Name = v.Name
+                        end
+                    end
+                    for _, chr in pairs(game.Workspace.Enemies:GetDescendants()) do
+                        if chr:IsA("Model") and chr:FindFirstChild("EnemyHumanoid") then
+                            local Esp = Holder:FindFirstChild(chr.Name) or createEsp(Color3.new(1,0,0), chr)
+                            Esp.Name = chr.Name
+                        end
+                    end
+                end
+                task.wait()
+            end
+        else
+            -- Remove existing highlights
+            pcall(function()
+                local Holder = game.CoreGui:FindFirstChild("EspHolder")
+                if Holder then
+                    for _, Esp in pairs(Holder:GetChildren()) do
+                        Esp:Destroy()
+                    end
+                end
+            end)
+        end
+    end
+})
+
+
+
+
+
+
+
+
+
+
+
 local Section = Tab:AddSection({
 	Name = "Weapon Section [Fe]" -- The name of the section.
 })
@@ -617,6 +714,7 @@ local refreshButton = Tab1:AddButton({
 local teleportButton = Tab1:AddButton({
     Name = "Teleport To selected Player",
     Callback = function()
+    
         local selectedPlayer = game.Players:FindFirstChild(getgenv().SelectedPlayer)
         if selectedPlayer ~= nil and selectedPlayer.Character ~= nil and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
             local rootPart = selectedPlayer.Character:WaitForChild("HumanoidRootPart")
