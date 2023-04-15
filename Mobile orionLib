@@ -822,34 +822,34 @@ function OrionLib:MakeWindow(WindowConfig)
 	MakeDraggable(DragPoint, MainWindow)
 
 	AddConnection(CloseBtn.MouseButton1Up, function()
-		if Minimized then
-			TweenService:Create(MainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, 566, 0, 415)}):Play()
-			MinimizeBtn.Ico.Image = "rbxassetid://7734042071"
-			SettingsFrame.Visible = true
+    if Minimized then
+        TweenService:Create(MainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, 566, 0, 415)}):Play()
+        MinimizeBtn.Ico.Image = "rbxassetid://7734042071"
+        SettingsFrame.Visible = true
 
-			wait(.02)
-			MainWindow.Shadow.Visible = false
-			MainWindow.ClipsDescendants = false
-			WindowStuff.Visible = true
-			WindowTopBarLine.Visible = true
-	
-	end)
+        wait(.02)
+        MainWindow.Shadow.Visible = false
+        MainWindow.ClipsDescendants = false
+        WindowStuff.Visible = true
+        WindowTopBarLine.Visible = true
+    end
+end)
 
-	AddConnection(MinimizeBtn.MouseButton1Up, function()
-			SettingsFrame.Visible = false
-			MainWindow.Shadow.Visible = true
+AddConnection(MinimizeBtn.MouseButton1Up, function()
+    SettingsFrame.Visible = false
+    MainWindow.Shadow.Visible = true
 
-			MainWindow.ClipsDescendants = true
-			WindowTopBarLine.Visible = false
-			MinimizeBtn.Ico.Image = "rbxassetid://7072720870"
+    MainWindow.ClipsDescendants = true
+    WindowTopBarLine.Visible = false
+    MinimizeBtn.Ico.Image = "rbxassetid://7072720870"
 
-			TweenService:Create(MainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, WindowName.TextBounds.X + 140, 0, 50)}):Play()
-			wait(0.1)
-			WindowStuff.Visible = false	
+    TweenService:Create(MainWindow, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Size = UDim2.new(0, WindowName.TextBounds.X + 140, 0, 50)}):Play()
+    wait(0.1)
+    WindowStuff.Visible = false
 
-		end
-		Minimized = not Minimized    
-	end)
+    Minimized = not Minimized
+end)
+
 
 	local function LoadSequence()
 		MainWindow.Visible = false
