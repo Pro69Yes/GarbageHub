@@ -1,45 +1,13 @@
---Webhook
-getgenv().Webhook = false
-if getgenv().Webhook == true then
-local webhookUrl = "https://discord.com/api/webhooks/1096095999212146809/3QRZ0hBfEl-eUNEdh_hsseu11R2Q-Gm9du_RSY1VGO7fstIQC_xxr9fo0HIMCg_yRscc"
-
-local data = {
-   ["content"] = "",
-   ["embeds"] = {
-       {
-           ["title"] = "**Someone Executed Your Script!**",
-           ["description"] = "Username: **" .. game.Players.LocalPlayer.Name.. "**\n" ..
-                              "DisplayName: **".. tostring(game.Players.LocalPlayer.DisplayName).. "**\n" ..
-                              "UserId: **".. tostring(game.Players.LocalPlayer.UserId).. "**\n" ..                                   
-                               "Game Name: **" .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name.. "**\n" ..
-                               "Game Id: **" .. game.PlaceId.. "**\n" ,
-           ["type"] = "rich",
-           ["color"] = tonumber(0x7269da),
-           ["image"] = {
-               ["url"] = "http://www.roblox.com/Thumbs/Avatar.ashx?x=150&y=150&Format=Png&username=" ..
-                   tostring(game:GetService("Players").LocalPlayer.Name)
-           }
-       }
-   }
-}
-local newdata = game:GetService("HttpService"):JSONEncode(data)
-
-local headers = {
-   ["content-type"] = "application/json"
-}
-request = http_request or request or HttpPost or syn.request
-local requestInfo = {Url = webhookUrl, Body = newdata, Method = "POST", Headers = headers}
-request(requestInfo)
-end
 
 
 
 
 
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/zntly/highlight-esp/main/esp.lua"))()
 
-local GarbageHub = loadstring(game:HttpGet(('https://raw.githubusercontent.com/technorav3nn/Osiris/main/source.lua')))()
+
+
+local GarbageHub = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Pro69Yes/GarbageHub/main/Mobile%20orionLib')))()
 --Windows
 local Window = GarbageHub:MakeWindow({
 Name = "Garbage Hub | Dumb Boss Fight", 
@@ -250,7 +218,7 @@ end
 function VoteRight()
 getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
     local amount = getgenv().SetVotesClicks
-    local mapName = game:GetService("ReplicatedStorage").Voting.Map3.Value
+    local mapName = game:GetService("ReplicatedStorage").Voting.Map1.Value
     if getgenv().UnfairVote == "Add" then
         for i=1, amount do
             local args = {[1] = 1}
@@ -276,10 +244,10 @@ getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
     end
 end
 
-function Middle()
+function VoteMiddle()
     getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
     local amount = getgenv().SetVotesClicks
-    local mapName = game:GetService("ReplicatedStorage").Voting.Map3.Value
+    local mapName = game:GetService("ReplicatedStorage").Voting.Map2.Value
     if getgenv().UnfairVote == "Add" then
         for i=1, amount do
             local args = {[1] = 2}
@@ -361,32 +329,57 @@ end
 
 
 function Mobilebutton()
-local Toggle = Instance.new("ScreenGui")
+    local Toggle = Instance.new("ScreenGui")
 local UIToggle = Instance.new("TextButton")
 Toggle.Name = "Orion Hider"
 Toggle.Parent = game.CoreGui.Orion
 
+local toggleSize = UDim2.new(0, 50, 0, 50)
+local togglePos = UDim2.new(0.75, -25, 0.15, 0)
+
 UIToggle.Name = "Toggler"
 UIToggle.Parent = Toggle
-UIToggle.BackgroundColor3 = Color3.fromRGB(0,8,8)
-UIToggle.BackgroundTransparency = 0.660
-UIToggle.Position = UDim2.new(0,890,0 ,0.6)
-UIToggle.Size = UDim2.new(0,50 ,0 ,50)
-UIToggle.Font = Enum.Font.Code
-UIToggle.Text = "Hide/Unhide"
-UIToggle.TextColor3 = Color3.fromRGB(255,255,255)
-UIToggle.TextSize = 8
-UIToggle.Selectable = false
-UIToggle.TextScaled = true
-UIToggle.TextXAlignment = Enum.TextXAlignment.Left
-UIToggle.MouseButton1Click:connect(function()
-if game.CoreGui.Orion.Enabled == true then
-game.CoreGui.Orion.Enabled = false
-elseif game.CoreGui.Orion.Enabled == false then
-game.CoreGui.Orion.Enabled = true
-end
+UIToggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+UIToggle.BackgroundTransparency = 1
+UIToggle.Position = togglePos
+UIToggle.Size = toggleSize
+UIToggle.Text = ""
+UIToggle.AnchorPoint = Vector2.new(0.5, 0.5) -- set the anchor point to the center
+UIToggle.AutoButtonColor = false -- disable the default button color change
+
+-- create an image label for the button's icon
+local Icon = Instance.new("ImageLabel")
+Icon.Name = "Icon"
+Icon.BackgroundTransparency = 1
+
+local iconSize = UDim2.new(0, 50, 0, 50)
+local iconPos = UDim2.new(0.75, -25, 0.15, 0)
+
+Icon.Position = iconPos -- center the icon
+Icon.Size = iconSize
+Icon.AnchorPoint = Vector2.new(0.5, 0.5) -- set the anchor point to the center
+Icon.Image = "rbxassetid://7743878496" -- replace with your asset ID
+Icon.ImageColor3 = Color3.new(1, 1, 1)
+Icon.ImageTransparency = 0
+Icon.Parent = UIToggle
+
+-- set up the button's mouse click event
+UIToggle.MouseButton1Click:Connect(function()
+    game:GetService('VirtualInputManager'):SendKeyEvent(true, 'N', false, uwu)
+end)
+
+-- hide everything except the image
+UIToggle:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+    for _, child in ipairs(UIToggle:GetChildren()) do
+        if child ~= Icon then
+            child.Visible = false
+        end
+    end
 end)
 end
+
+
+
 
 --             /{ Hide/Unhide Button (Mobile Only) }\
 if game.CoreGui.RobloxGui.FluxusAndroidUI then
@@ -482,15 +475,6 @@ end
 EspEnabler = false
 SelectWhoEsp = " "
 
-Tab:AddDropdown({
-    Name = "Select WhoTo",
-    Default = " ",
-    Options = {"Enemies {Buggy}", "Players", "Both"},
-    Callback = function(Value)
-        SelectWhoEsp = Value
-    end    
-})
-
 local function createEsp(highlightColor, adornee)
     local Esp = Instance.new("Highlight")
     Esp.Parent = game.CoreGui.EspHolder
@@ -502,6 +486,15 @@ local function createEsp(highlightColor, adornee)
     Esp.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     return Esp
 end
+
+Tab:AddDropdown({
+    Name = "Select WhoTo",
+    Default = " ",
+    Options = {"Enemies {Buggy}", "Players", "Both"},
+    Callback = function(Value)
+        SelectWhoEsp = Value
+    end    
+})
 
 Tab:AddToggle({
     Name = "Enable Esp",
@@ -522,39 +515,41 @@ Tab:AddToggle({
             if not success then
                 warn("Error creating EspHolder: ", Holder)
             else
-                while EspEnabler do
-                    if SelectWhoEsp == "Enemies {Buggy}" then
-                        for _, chr in pairs(game.Workspace.Enemies:GetDescendants()) do
-                            if chr:IsA("Model") and chr:FindFirstChild("EnemyHumanoid") then
-                                local Esp = Holder:FindFirstChild(chr.Name) or createEsp(Color3.new(1,0,0), chr)
-                                Esp.Name = chr.Name
+                spawn(function()
+                    while EspEnabler do
+                        if SelectWhoEsp == "Enemies {Buggy}" then
+                            for _, chr in pairs(game.Workspace.Enemies:GetDescendants()) do
+                                if chr:IsA("Model") and chr:FindFirstChild("EnemyHumanoid") then
+                                    local Esp = Holder:FindFirstChild(chr.Name) or createEsp(Color3.new(1,0,0), chr)
+                                    Esp.Name = chr.Name
+                                end
+                            end
+                        elseif SelectWhoEsp == "Players" then
+                            for _,v in pairs(game.Players:GetChildren()) do
+                                local chr = v.Character
+                                if chr ~= nil then
+                                    local Esp = Holder:FindFirstChild(v.Name) or createEsp(Color3.new(1,1,1), chr)
+                                    Esp.Name = v.Name
+                                end
+                            end
+                        elseif SelectWhoEsp == "Both" then
+                            for _,v in pairs(game.Players:GetChildren()) do
+                                local chr = v.Character
+                                if chr ~= nil then
+                                    local Esp = Holder:FindFirstChild(v.Name) or createEsp(Color3.new(1,1,1), chr)
+                                    Esp.Name = v.Name
+                                end
+                            end
+                            for _, chr in pairs(game.Workspace.Enemies:GetDescendants()) do
+                                if chr:IsA("Model") and chr:FindFirstChild("EnemyHumanoid") then
+                                    local Esp = Holder:FindFirstChild(chr.Name) or createEsp(Color3.new(1,0,0), chr)
+                                    Esp.Name = chr.Name
+                                end
                             end
                         end
-                    elseif SelectWhoEsp == "Players" then
-                        for _,v in pairs(game.Players:GetChildren()) do
-                            local chr = v.Character
-                            if chr ~= nil then
-                                local Esp = Holder:FindFirstChild(v.Name) or createEsp(Color3.new(1,1,1), chr)
-                                Esp.Name = v.Name
-                            end
-                        end
-                    elseif SelectWhoEsp == "Both" then
-                        for _,v in pairs(game.Players:GetChildren()) do
-                            local chr = v.Character
-                            if chr ~= nil then
-                                local Esp = Holder:FindFirstChild(v.Name) or createEsp(Color3.new(1,1,1), chr)
-                                Esp.Name = v.Name
-                            end
-                        end
-                        for _, chr in pairs(game.Workspace.Enemies:GetDescendants()) do
-                            if chr:IsA("Model") and chr:FindFirstChild("EnemyHumanoid") then
-                                local Esp = Holder:FindFirstChild(chr.Name) or createEsp(Color3.new(1,0,0), chr)
-                                Esp.Name = chr.Name
-                            end
-                        end
+                        wait(0.5)
                     end
-                    task.wait()
-                end
+                end)
             end
         else
             -- Remove existing highlights
@@ -572,6 +567,7 @@ Tab:AddToggle({
         end
     end
 })
+
 
 
 
@@ -618,6 +614,194 @@ v.Value = true
 end 
 end
   	end    
+})
+local Section = Tab:AddSection({
+	Name = "Fly Section" -- The name of the section.
+})
+
+
+local tpwalking
+
+Tab:AddToggle({
+    Name = "Enable Fly",
+    Default = false,
+    Callback = function(Value)
+    nowe = Value
+if nowe == false then
+            tpwalking = false
+            speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,true)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,true)
+		speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
+	elseif nowe == true then
+		for i = 1, speeds do
+			spawn(function()
+
+				local hb = game:GetService("RunService").Heartbeat	
+				
+				tpwalking = true
+				local chr = game.Players.LocalPlayer.Character
+				local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
+				while tpwalking and hb:Wait() and chr and hum and hum.Parent do
+					if hum.MoveDirection.Magnitude > 0 then
+						chr:TranslateBy(hum.MoveDirection)
+					end
+				end
+
+			end)
+		end
+		game.Players.LocalPlayer.Character.Animate.Disabled = true
+		local Char = game.Players.LocalPlayer.Character
+		local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+		for i,v in next, Hum:GetPlayingAnimationTracks() do
+			v:AdjustSpeed(0)
+		end
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,false)
+		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,false)
+		speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+	end
+	if game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R6 then
+		local plr = game.Players.LocalPlayer
+		local torso = plr.Character.Torso
+		local flying = true
+		local deb = true
+		local ctrl = {f = 0, b = 0, l = 0, r = 0}
+		local lastctrl = {f = 0, b = 0, l = 0, r = 0}
+		local maxspeed = 9
+		local speed = 9
+
+
+		local bg = Instance.new("BodyGyro", torso)
+		bg.P = 9e4
+		bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+		bg.cframe = torso.CFrame
+		local bv = Instance.new("BodyVelocity", torso)
+		bv.velocity = Vector3.new(0,0.1,0)
+		bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
+		if nowe == true then
+			plr.Character.Humanoid.PlatformStand = true
+		end
+		while nowe == true or game:GetService("Players").LocalPlayer.Character.Humanoid.Health == 0 do
+			game:GetService("RunService").RenderStepped:Wait()
+
+			if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
+				speed = speed+.5+(speed/maxspeed)
+				if speed > maxspeed then
+					speed = maxspeed
+				end
+			elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
+				speed = speed-1
+				if speed < 0 then
+					speed = 9
+				end
+			end
+			if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+				lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
+			elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+			else
+				bv.velocity = Vector3.new(0,0,0)
+			end
+			--	game.Players.LocalPlayer.Character.Animate.Disabled = true
+			bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
+		end
+		ctrl = {f = 0, b = 0, l = 0, r = 0}
+		lastctrl = {f = 0, b = 0, l = 0, r = 0}
+		speed = 9
+		bg:Destroy()
+		bv:Destroy()
+		plr.Character.Humanoid.PlatformStand = false
+		game.Players.LocalPlayer.Character.Animate.Disabled = false
+		tpwalking = false
+
+
+
+
+	else
+		local plr = game.Players.LocalPlayer
+		local UpperTorso = plr.Character.UpperTorso
+		local flying = true
+		local deb = true
+		local ctrl = {f = 0, b = 0, l = 0, r = 0}
+		local lastctrl = {f = 0, b = 0, l = 0, r = 0}
+		local maxspeed = 9
+		local speed = 9
+
+
+		local bg = Instance.new("BodyGyro", UpperTorso)
+		bg.P = 9e4
+		bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+		bg.cframe = UpperTorso.CFrame
+		local bv = Instance.new("BodyVelocity", UpperTorso)
+		bv.velocity = Vector3.new(0,0.1,0)
+		bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
+		if nowe == true then
+			plr.Character.Humanoid.PlatformStand = true
+		end
+		while nowe == true or game:GetService("Players").LocalPlayer.Character.Humanoid.Health == 0 do
+			wait()
+
+			if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
+				speed = speed+.5+(speed/maxspeed)
+				if speed > maxspeed then
+					speed = maxspeed
+				end
+			elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
+				speed = speed-1
+				if speed < 0 then
+					speed = 9
+				end
+			end
+			if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+				lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
+			elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then
+				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+			else
+				bv.velocity = Vector3.new(0,0,0)
+			end
+
+			bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
+		end
+		ctrl = {f = 0, b = 0, l = 0, r = 0}
+		lastctrl = {f = 0, b = 0, l = 0, r = 0}
+		speed = 9
+		bg:Destroy()
+		bv:Destroy()
+		plr.Character.Humanoid.PlatformStand = false
+		game.Players.LocalPlayer.Character.Animate.Disabled = false
+		tpwalking = false
+
+    print(speed)
+end
+end
 })
 local Section = Tab:AddSection({
 	Name = "Unfair Votes Sections [Fe]" -- The name of the section.
@@ -917,194 +1101,7 @@ Tab1:AddButton({
     end -- add this closing curly brace
 })
 
-local Section = Tab1:AddSection({
-	Name = "Fly Section" -- The name of the section.
-})
 
-
-local tpwalking
-
-Tab1:AddToggle({
-    Name = "Enable Fly",
-    Default = false,
-    Callback = function(Value)
-    nowe = Value
-if nowe == false then
-            tpwalking = false
-            speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,true)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,true)
-		speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
-	elseif nowe == true then
-		for i = 1, speeds do
-			spawn(function()
-
-				local hb = game:GetService("RunService").Heartbeat	
-				
-				tpwalking = true
-				local chr = game.Players.LocalPlayer.Character
-				local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
-				while tpwalking and hb:Wait() and chr and hum and hum.Parent do
-					if hum.MoveDirection.Magnitude > 0 then
-						chr:TranslateBy(hum.MoveDirection)
-					end
-				end
-
-			end)
-		end
-		game.Players.LocalPlayer.Character.Animate.Disabled = true
-		local Char = game.Players.LocalPlayer.Character
-		local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
-
-		for i,v in next, Hum:GetPlayingAnimationTracks() do
-			v:AdjustSpeed(0)
-		end
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,false)
-		speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,false)
-		speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
-	end
-	if game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R6 then
-		local plr = game.Players.LocalPlayer
-		local torso = plr.Character.Torso
-		local flying = true
-		local deb = true
-		local ctrl = {f = 0, b = 0, l = 0, r = 0}
-		local lastctrl = {f = 0, b = 0, l = 0, r = 0}
-		local maxspeed = 9
-		local speed = 9
-
-
-		local bg = Instance.new("BodyGyro", torso)
-		bg.P = 9e4
-		bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
-		bg.cframe = torso.CFrame
-		local bv = Instance.new("BodyVelocity", torso)
-		bv.velocity = Vector3.new(0,0.1,0)
-		bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
-		if nowe == true then
-			plr.Character.Humanoid.PlatformStand = true
-		end
-		while nowe == true or game:GetService("Players").LocalPlayer.Character.Humanoid.Health == 0 do
-			game:GetService("RunService").RenderStepped:Wait()
-
-			if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
-				speed = speed+.5+(speed/maxspeed)
-				if speed > maxspeed then
-					speed = maxspeed
-				end
-			elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
-				speed = speed-1
-				if speed < 0 then
-					speed = 9
-				end
-			end
-			if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
-				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
-				lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
-			elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then
-				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
-			else
-				bv.velocity = Vector3.new(0,0,0)
-			end
-			--	game.Players.LocalPlayer.Character.Animate.Disabled = true
-			bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
-		end
-		ctrl = {f = 0, b = 0, l = 0, r = 0}
-		lastctrl = {f = 0, b = 0, l = 0, r = 0}
-		speed = 9
-		bg:Destroy()
-		bv:Destroy()
-		plr.Character.Humanoid.PlatformStand = false
-		game.Players.LocalPlayer.Character.Animate.Disabled = false
-		tpwalking = false
-
-
-
-
-	else
-		local plr = game.Players.LocalPlayer
-		local UpperTorso = plr.Character.UpperTorso
-		local flying = true
-		local deb = true
-		local ctrl = {f = 0, b = 0, l = 0, r = 0}
-		local lastctrl = {f = 0, b = 0, l = 0, r = 0}
-		local maxspeed = 9
-		local speed = 9
-
-
-		local bg = Instance.new("BodyGyro", UpperTorso)
-		bg.P = 9e4
-		bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
-		bg.cframe = UpperTorso.CFrame
-		local bv = Instance.new("BodyVelocity", UpperTorso)
-		bv.velocity = Vector3.new(0,0.1,0)
-		bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
-		if nowe == true then
-			plr.Character.Humanoid.PlatformStand = true
-		end
-		while nowe == true or game:GetService("Players").LocalPlayer.Character.Humanoid.Health == 0 do
-			wait()
-
-			if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
-				speed = speed+.5+(speed/maxspeed)
-				if speed > maxspeed then
-					speed = maxspeed
-				end
-			elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
-				speed = speed-1
-				if speed < 0 then
-					speed = 9
-				end
-			end
-			if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
-				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
-				lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
-			elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then
-				bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
-			else
-				bv.velocity = Vector3.new(0,0,0)
-			end
-
-			bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
-		end
-		ctrl = {f = 0, b = 0, l = 0, r = 0}
-		lastctrl = {f = 0, b = 0, l = 0, r = 0}
-		speed = 9
-		bg:Destroy()
-		bv:Destroy()
-		plr.Character.Humanoid.PlatformStand = false
-		game.Players.LocalPlayer.Character.Animate.Disabled = false
-		tpwalking = false
-
-    print(speed)
-end
-end
-})
 
 
 
@@ -1152,3 +1149,8 @@ end
 wait(0.5)
 repopulateOptions()
 GarbageHub:Init()
+
+
+    
+
+    
