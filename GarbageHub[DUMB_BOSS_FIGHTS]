@@ -32,15 +32,19 @@ getgenv().SelectPlayer = false
 getgenv().viewPlayer = false
 getgenv().Selectcamera = false
 nowe = false
-
+EspEnabler = false
+SelectWhoEsp = ""
 --                                     /{Variables}/\
 local RunService = game:GetService("RunService")
 speeds = 1
 
 local speaker = game:GetService("Players").LocalPlayer
-
+local tpwalking
 local chr = game.Players.LocalPlayer.Character
 local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
+-- Get a reference to the client player
+local player = game.Players.LocalPlayer
+
 --                                      /{Tables}/
 local WeaponsNameV2 = {}
 for _, child in ipairs(game.Players.LocalPlayer.ItemOwned:GetDescendants()) do
@@ -114,6 +118,15 @@ local cameraModes = {
     CustomOrbital = 47,
     InvisCam = "Invisicam"
 }
+
+local cameraNames = {}
+for name, value in pairs(cameraModes) do
+    table.insert(cameraNames, name)
+end
+
+-- Define the options table
+local options = {}
+
 --                                   /{Functions}/\
 function Hitbox()
 pcall(function()
@@ -151,6 +164,177 @@ end
 end
 end
 end)
+end
+
+function RejoinLoLol()
+local function callback(Text)
+            if Text == "Yes" then
+                game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
+                game.StarterGui:SetCore("SendNotification", {
+                    Title = "Notification";
+                    Text = "Rejoining. . . Please Wait.";
+                    Icon = "rbxassetid://7733964719";
+                    Duration = 5;
+                })
+            elseif Text == "Nah" then
+                game.StarterGui:SetCore("SendNotification", {
+                    Title = "Notification";
+                    Text = "Rejoin Action Failed.";
+                    Icon = "rbxassetid://7743878496";
+                    Duration = 5;
+                })
+            end
+        end
+
+        local NotificationBindable = Instance.new("BindableFunction")
+        NotificationBindable.OnInvoke = callback
+
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Notification";
+            Text = "You sure you want to rejoin from the server?";
+            Icon = "rbxassetid://7733658271";
+            Duration = 5;
+            Button1 = "Yes";
+            Button2 = "Nah";
+            Callback = NotificationBindable;
+        })
+    end -- add this closing curly brace
+
+
+function InstantKillAllEnemies()
+local enemiesFolder = workspace:FindFirstChild("Enemies")
+local descendants = enemiesFolder:GetDescendants()
+for _, descendant in ipairs(descendants) do
+    if descendant:IsA("Humanoid") then
+        descendant.Health = 0 -- Set the humanoid's walkspeed to 50
+    end
+end
+end
+
+function UnViewSelectedPlayerLol()
+workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+        workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+end
+function ViewSelectedPlayerLol()
+local selectedPlayer = game.Players:FindFirstChild(getgenv().SelectedPlayer)
+        if selectedPlayer ~= nil and selectedPlayer.Character ~= nil then
+            workspace.CurrentCamera.CameraSubject = selectedPlayer.Character.Humanoid
+            workspace.CurrentCamera.CameraType = Enum.CameraType.Follow
+        end
+end
+
+function GotoSelectPlayerLol()
+local selectedPlayer = game.Players:FindFirstChild(getgenv().SelectedPlayer)
+        if selectedPlayer ~= nil and selectedPlayer.Character ~= nil and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local rootPart = selectedPlayer.Character:WaitForChild("HumanoidRootPart")
+            game.Players.LocalPlayer.Character:MoveTo(rootPart.Position)
+        end
+end
+
+
+
+
+function ServerHop()
+local function callback(Text)
+		    if Text == "Yes" then
+		        game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
+		        game.StarterGui:SetCore("SendNotification", {
+		            Title = "Notification";
+		            Text = "Searching A Server. . . Please Wait.";
+		            Icon = "rbxassetid://7734052925";
+		            Duration = 5;
+		        })
+		        wait()
+		        local module = loadstring(game:HttpGet"https://raw.githubusercontent.com/LeoKholYt/roblox/main/lk_serverhop.lua")()
+module:Teleport(game.PlaceId)
+		    elseif Text == "Nah" then
+		        game.StarterGui:SetCore("SendNotification", {
+		            Title = "Notification";
+		            Text = "ServerHop Action Failed.";
+		            Icon = "rbxassetid://7743878496";
+		            Duration = 5;
+		        })
+		    end
+		end
+
+		local NotificationBindable = Instance.new("BindableFunction")
+		NotificationBindable.OnInvoke = callback
+
+		game.StarterGui:SetCore("SendNotification", {
+		    Title = "Notification";
+		    Text = "You sure you want to Leave from the server And Go to another random server?";
+		    Icon = "rbxassetid://7733658271";
+		    Duration = 5;
+		    Button1 = "Yes";
+		    Button2 = "Nah";
+		    Callback = NotificationBindable;
+		})
+    
+end
+
+function TpTool()
+local plr = game:GetService("Players").LocalPlayer
+local mouse = plr:GetMouse()
+
+local tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Tp Tool"
+
+tool.Activated:Connect(function()
+local root = plr.Character.HumanoidRootPart
+local pos = mouse.Hit.Position+Vector3.new(0,2.5,0)
+local offset = pos-root.Position
+root.CFrame = root.CFrame+offset
+end)
+
+tool.Parent = plr.Backpack
+end
+
+function forceCdLolMmM()
+game.Players.LocalPlayer.Backpack.EpicKatana.Cooldown.Value = 0
+end
+
+function HMMMCUTSCENEWHAT()
+if game.ReplicatedStorage.Game.Cutscene.Value == true then
+      game.ReplicatedStorage.Game.Cutscene.Value = false
+elseif game.ReplicatedStorage.Game.Cutscene.Value == false then
+game.ReplicatedStorage.Game.Cutscene.Value = true
+  	end    
+end
+
+local function teleportToCamera()
+local Players = game:GetService("Players")
+    local player = Players.LocalPlayer
+    local character = player.Character
+    if not character then return end
+
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if not humanoid then return end
+
+    local camera = workspace.CurrentCamera
+    local cameraPos = camera.CFrame.p
+
+    humanoid.RootPart.CFrame = CFrame.new(cameraPos)
+end
+
+function FixXam()
+local selectedCameraMode = getgenv().Selectcamera
+if selectedCameraMode ~= nil then
+    local previousCamera = workspace.CurrentCamera
+    local newCamera = Instance.new("Camera")
+    newCamera.CameraType = Enum.CameraType[selectedCameraMode]
+    newCamera.CFrame = previousCamera.CFrame -- Set the position of the new camera
+    workspace.CurrentCamera = newCamera
+end
+end
+
+function SelectXamen()
+local selectedCameraMode = getgenv().Selectcamera
+        if selectedCameraMode ~= nil then
+            workspace.CurrentCamera.CameraType = Enum.CameraType[selectedCameraMode]
+            elseif getgenv().Selectcamera == "Invisicam" then
+game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = "Invisicam"
+        end
 end
 
 function EquipWeapon()
@@ -215,6 +399,18 @@ game.Players.LocalPlayer.ItemOwned.Venomshank.Value = true
 end
 end 
 
+local function createEsp(highlightColor, adornee)
+    local Esp = Instance.new("Highlight")
+    Esp.Parent = game.CoreGui.EspHolder
+    Esp.FillColor = highlightColor
+    Esp.FillTransparency = 0.87
+    Esp.OutlineColor = highlightColor
+    Esp.OutlineTransparency = 0.8
+    Esp.Adornee = adornee
+    Esp.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    return Esp
+end
+
 function VoteRight()
 getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
     local amount = getgenv().SetVotesClicks
@@ -244,389 +440,7 @@ getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
     end
 end
 
-function VoteMiddle()
-    getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
-    local amount = getgenv().SetVotesClicks
-    local mapName = game:GetService("ReplicatedStorage").Voting.Map2.Value
-    if getgenv().UnfairVote == "Add" then
-        for i=1, amount do
-            local args = {[1] = 2}
-            game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("AddVote"):FireServer(unpack(args))
-        end
-        game.StarterGui:SetCore("SendNotification", {
-            Title = "Notify";
-            Text = "Successfully Add ".. amount .. " Votes On "   .. mapName .. " Map! (Vote 2)";
-            Icon = "rbxassetid://7733964719";
-            Duration = 3;
-        })
-    elseif getgenv().UnfairVote == "Remove" then
-        for i=1, amount do
-            local args = {[1] = 2}
-            game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("RemoveVote"):FireServer(unpack(args))
-        end
-        game.StarterGui:SetCore("SendNotification", {
-            Title = "Notify";
-            Text = "Successfully Remove ".. amount .. " Votes On "   .. mapName .. " Map! (Vote 2)";
-            Icon = "rbxassetid://7733964719";
-            Duration = 3;
-        })
-    end
-end
-
-function VoteLeft()
-    getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
-    local amount = getgenv().SetVotesClicks
-    local mapName = game:GetService("ReplicatedStorage").Voting.Map3.Value
-    if getgenv().UnfairVote == "Add" then
-        for i=1, amount do
-            local args = {[1] = 3}
-            game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("AddVote"):FireServer(unpack(args))
-        end
-        game.StarterGui:SetCore("SendNotification", {
-            Title = "Notify";
-            Text = "Successfully Add ".. amount .. " Votes On "   .. mapName .. " Map! (Vote 3)";
-            Icon = "rbxassetid://7733964719";
-            Duration = 3;
-        })
-    elseif getgenv().UnfairVote == "Remove" then
-        for i=1, amount do
-            local args = {[1] = 3}
-            game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("RemoveVote"):FireServer(unpack(args))
-        end
-        game.StarterGui:SetCore("SendNotification", {
-            Title = "Notify";
-            Text = "Successfully Remove ".. amount .. " Votes On "   .. mapName .. " Map! (Vote 3)";
-            Icon = "rbxassetid://7733964719";
-            Duration = 3;
-        })
-    end
-end
-
-
-
-function walkspeed()
-getgenv().SetWalkspeed = getgenv().SetWalkspeed or 16
-          while getgenv().Walkspeed do wait()
-          game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = getgenv().SetWalkspeed
-if getgenv().Walkspeed == false then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
-end
-end
-end
-
-function SayHenryLine()
--- Select a random item from the table
-local randomIndex = math.random(1, #HenryLine)
-local RandomWord = HenryLine[randomIndex]
-local args = {
-    [1] = RandomWord,
-    [2] = "All"
-}
-
-game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))
-end
-
-
-
-function Mobilebutton()
-    local Toggle = Instance.new("ScreenGui")
-local UIToggle = Instance.new("TextButton")
-Toggle.Name = "Orion Hider"
-Toggle.Parent = game.CoreGui.Orion
-
-local toggleSize = UDim2.new(0, 50, 0, 50)
-local togglePos = UDim2.new(0.75, -25, 0.15, 0)
-
-UIToggle.Name = "Toggler"
-UIToggle.Parent = Toggle
-UIToggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-UIToggle.BackgroundTransparency = 1
-UIToggle.Position = togglePos
-UIToggle.Size = toggleSize
-UIToggle.Text = ""
-UIToggle.AnchorPoint = Vector2.new(0.5, 0.5) -- set the anchor point to the center
-UIToggle.AutoButtonColor = false -- disable the default button color change
-
--- create an image label for the button's icon
-local Icon = Instance.new("ImageLabel")
-Icon.Name = "Icon"
-Icon.BackgroundTransparency = 1
-
-local iconSize = UDim2.new(0, 50, 0, 50)
-local iconPos = UDim2.new(0.75, -25, 0.15, 0)
-
-Icon.Position = iconPos -- center the icon
-Icon.Size = iconSize
-Icon.AnchorPoint = Vector2.new(0.5, 0.5) -- set the anchor point to the center
-Icon.Image = "rbxassetid://7743878496" -- replace with your asset ID
-Icon.ImageColor3 = Color3.new(1, 1, 1)
-Icon.ImageTransparency = 0
-Icon.Parent = UIToggle
-
--- set up the button's mouse click event
-UIToggle.MouseButton1Click:Connect(function()
-    game:GetService('VirtualInputManager'):SendKeyEvent(true, 'N', false, uwu)
-end)
-
--- hide everything except the image
-UIToggle:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-    for _, child in ipairs(UIToggle:GetChildren()) do
-        if child ~= Icon then
-            child.Visible = false
-        end
-    end
-end)
-end
-
-
-
-
---             /{ Hide/Unhide Button (Mobile Only) }\
-if game.CoreGui.RobloxGui.FluxusAndroidUI then
-Mobilebutton()
-elseif game.CoreGui.HydrogenGui then
-Mobilebutton()
-end
-
-
---                                        /{Tabs}/\
-local Tb = Window:MakeTab({
-	Name = "Home", --The name of the tab.
-	Icon = "rbxassetid://7733960981", -- The icon of the tab.
-	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
-})
-local Tab = Window:MakeTab({
-	Name = "Main", --The name of the tab.
-	Icon = "rbxassetid://7733752575", -- The icon of the tab.
-	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
-})
-local Tab1 = Window:MakeTab({
-	Name = "Misc", --The name of the tab.
-	Icon = "rbxassetid://7734021469", -- The icon of the tab.
-	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
-})
-local Tab2 = Window:MakeTab({
-	Name = "Credit", --The name of the tab.
-	Icon = "rbxassetid://7743875962", -- The icon of the tab.
-	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
-})
---                                           /{Home}/\
-local Section = Tb:AddSection({
-	Name = "Home Section" -- The name of the section.
-})
-Tb:AddLabel("Welcome , "..game.Players.LocalPlayer.DisplayName)
---                                        /{Interface}/\
-local Section = Tab:AddSection({
-	Name = "Hitbox Extender Section" -- The name of the section.
-})
-Tab:AddDropdown({
-	Name = "Select BodyPart", -- The name of the dropdown.
-	Default = BodyPart[1], -- The default value of the dropdown.
-	Options = BodyPart, -- The options in the dropdown.
-	Callback = function(Value) -- The function of the dropdown.
-		getgenv().SelectBodyPart = Value
-	end    
-})
-Tab:AddToggle({
-	Name = "Enable Hitbox Extender",
-	Default = false,
-	Callback = function(Value)
-getgenv().HitboxExtender = Value
-		Hitbox()
-	end    
-})
-Tab:AddTextbox({
-	Name = "Change Size of Hitbox",
-	Default = "",
-	TextDisappear = true,
-	Callback = function(Value)
-		getgenv().SetHitboxSize = Value
-	end	  
-})
-Tab:AddTextbox({
-	Name = "Set Transparency of Hitbox",
-	Default = "",
-	TextDisappear = true,
-	Callback = function(Value)
-		getgenv().SetHitboxTrans = Value
-	end	  
-})
-local Section = Tab:AddSection({
-	Name = "Crazy Power Section" -- The name of the section.
-})
-Tab:AddParagraph("How to use :","Click the button and go to the enemies [Fe]")
-Tab:AddParagraph("How to use 2 :","use a hitbox expander to check if enemies are doing anything unusual, such as shifting erratically or behaving strangely. Then, click the buttons.")
-Tab:AddButton({
-	Name = "Instantly Kill Nearest Enemies [Unstable/Buggy]",
-	Callback = function()
-      		local enemiesFolder = workspace:FindFirstChild("Enemies")
-local descendants = enemiesFolder:GetDescendants()
-for _, descendant in ipairs(descendants) do
-    if descendant:IsA("Humanoid") then
-        descendant.Health = 0 -- Set the humanoid's walkspeed to 50
-    end
-end
-  	end    
-})
- local EspSection = Tab:AddSection({
-    Name = "Esp Section"
-})
-
-EspEnabler = false
-SelectWhoEsp = " "
-
-local function createEsp(highlightColor, adornee)
-    local Esp = Instance.new("Highlight")
-    Esp.Parent = game.CoreGui.EspHolder
-    Esp.FillColor = highlightColor
-    Esp.FillTransparency = 0.87
-    Esp.OutlineColor = highlightColor
-    Esp.OutlineTransparency = 0.8
-    Esp.Adornee = adornee
-    Esp.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-    return Esp
-end
-
-Tab:AddDropdown({
-    Name = "Select WhoTo",
-    Default = " ",
-    Options = {"Enemies {Buggy}", "Players", "Both"},
-    Callback = function(Value)
-        SelectWhoEsp = Value
-    end    
-})
-
-Tab:AddToggle({
-    Name = "Enable Esp",
-    Default = false,
-    Callback = function(Value)
-        EspEnabler = Value
-        if EspEnabler then
-            local success,Holder = pcall(function()
-                local Folder = game.CoreGui:FindFirstChild("EspHolder")
-                if not Folder then
-                    Folder = Instance.new("Folder")
-                    Folder.Name = "EspHolder"
-                    Folder.Parent = game.CoreGui
-                end
-                return Folder
-            end)
-            
-            if not success then
-                warn("Error creating EspHolder: ", Holder)
-            else
-                spawn(function()
-                    while EspEnabler do
-                        if SelectWhoEsp == "Enemies {Buggy}" then
-                            for _, chr in pairs(game.Workspace.Enemies:GetDescendants()) do
-                                if chr:IsA("Model") and chr:FindFirstChild("EnemyHumanoid") then
-                                    local Esp = Holder:FindFirstChild(chr.Name) or createEsp(Color3.new(1,0,0), chr)
-                                    Esp.Name = chr.Name
-                                end
-                            end
-                        elseif SelectWhoEsp == "Players" then
-                            for _,v in pairs(game.Players:GetChildren()) do
-                                local chr = v.Character
-                                if chr ~= nil then
-                                    local Esp = Holder:FindFirstChild(v.Name) or createEsp(Color3.new(1,1,1), chr)
-                                    Esp.Name = v.Name
-                                end
-                            end
-                        elseif SelectWhoEsp == "Both" then
-                            for _,v in pairs(game.Players:GetChildren()) do
-                                local chr = v.Character
-                                if chr ~= nil then
-                                    local Esp = Holder:FindFirstChild(v.Name) or createEsp(Color3.new(1,1,1), chr)
-                                    Esp.Name = v.Name
-                                end
-                            end
-                            for _, chr in pairs(game.Workspace.Enemies:GetDescendants()) do
-                                if chr:IsA("Model") and chr:FindFirstChild("EnemyHumanoid") then
-                                    local Esp = Holder:FindFirstChild(chr.Name) or createEsp(Color3.new(1,0,0), chr)
-                                    Esp.Name = chr.Name
-                                end
-                            end
-                        end
-                        wait(0.5)
-                    end
-                end)
-            end
-        else
-            -- Remove existing highlights
-            local success,Holder = pcall(function()
-                return game.CoreGui:FindFirstChild("EspHolder")
-            end)
-            
-            if not success then
-                warn("Error finding EspHolder: ", Holder)
-            elseif Holder then
-                for _, Esp in pairs(Holder:GetChildren()) do
-                    Esp:Destroy()
-                end
-            end
-        end
-    end
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-local Section = Tab:AddSection({
-	Name = "Weapon Section [Fe]" -- The name of the section.
-})
-local SelectedWeapon = Tab:AddDropdown({
-	Name = "Select weapon", -- The name of the dropdown.
-	Default = " ", -- The default value of the dropdown.
-	Options = WeaponsNameV2, -- The options in the dropdown.
-	Callback = function(Value) -- The function of the dropdown.
-		getgenv().SelectWeapon = Value
-	end    
-})
-Tab:AddButton({
-	Name = "Equip", -- The name of the button.
-	Callback = function() --The function of the button.
-      EquipWeapon()
-  	end    
-})
-Tab:AddButton({
-	Name = "Add the weapon to the inventory", -- The name of the button.
-	Callback = function() --The function of the button.
-      PutItOnInventory()
-  	end    
-})
-Tab:AddButton({
-	Name = "Put all weapons in inventory", -- The name of the button.
-	Callback = function() --The function of the button.
-      for i,v in pairs(game.Players.LocalPlayer.ItemOwned:GetDescendants()) do 
-if v:IsA("BoolValue") then 
-v.Value = true
-end 
-end
-  	end    
-})
-local Section = Tab:AddSection({
-	Name = "Fly Section" -- The name of the section.
-})
-
-
-local tpwalking
-
-Tab:AddToggle({
-    Name = "Enable Fly",
-    Default = false,
-    Callback = function(Value)
-    nowe = Value
+function Fly()
 if nowe == false then
             tpwalking = false
             speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,true)
@@ -802,7 +616,361 @@ if nowe == false then
     print(speed)
 end
 end
+function VoteMiddle()
+    getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
+    local amount = getgenv().SetVotesClicks
+    local mapName = game:GetService("ReplicatedStorage").Voting.Map2.Value
+    if getgenv().UnfairVote == "Add" then
+        for i=1, amount do
+            local args = {[1] = 2}
+            game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("AddVote"):FireServer(unpack(args))
+        end
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Notify";
+            Text = "Successfully Add ".. amount .. " Votes On "   .. mapName .. " Map! (Vote 2)";
+            Icon = "rbxassetid://7733964719";
+            Duration = 3;
+        })
+    elseif getgenv().UnfairVote == "Remove" then
+        for i=1, amount do
+            local args = {[1] = 2}
+            game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("RemoveVote"):FireServer(unpack(args))
+        end
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Notify";
+            Text = "Successfully Remove ".. amount .. " Votes On "   .. mapName .. " Map! (Vote 2)";
+            Icon = "rbxassetid://7733964719";
+            Duration = 3;
+        })
+    end
+end
+
+function VoteLeft()
+    getgenv().SetVotesClicks = getgenv().SetVotesClicks or 1
+    local amount = getgenv().SetVotesClicks
+    local mapName = game:GetService("ReplicatedStorage").Voting.Map3.Value
+    if getgenv().UnfairVote == "Add" then
+        for i=1, amount do
+            local args = {[1] = 3}
+            game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("AddVote"):FireServer(unpack(args))
+        end
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Notify";
+            Text = "Successfully Add ".. amount .. " Votes On "   .. mapName .. " Map! (Vote 3)";
+            Icon = "rbxassetid://7733964719";
+            Duration = 3;
+        })
+    elseif getgenv().UnfairVote == "Remove" then
+        for i=1, amount do
+            local args = {[1] = 3}
+            game:GetService("ReplicatedStorage"):WaitForChild("Voting"):WaitForChild("RemoveVote"):FireServer(unpack(args))
+        end
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Notify";
+            Text = "Successfully Remove ".. amount .. " Votes On "   .. mapName .. " Map! (Vote 3)";
+            Icon = "rbxassetid://7733964719";
+            Duration = 3;
+        })
+    end
+end
+
+
+
+function walkspeed()
+getgenv().SetWalkspeed = getgenv().SetWalkspeed or 16
+          while getgenv().Walkspeed do wait()
+          game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = getgenv().SetWalkspeed
+if getgenv().Walkspeed == false then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+end
+end
+end
+
+function SayHenryLine()
+local randomIndex = math.random(1, #HenryLine)
+local RandomWord = HenryLine[randomIndex]
+while getgenv().Henry do wait(18)
+local args = {
+    [1] = RandomWord,
+    [2] = "All"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))
+if getgenv().Henry == false then
+break
+
+end
+end
+end
+
+
+
+function Mobilebutton()
+    local Toggle = Instance.new("ScreenGui")
+local UIToggle = Instance.new("TextButton")
+Toggle.Name = "Orion Hider"
+Toggle.Parent = game.CoreGui.Orion
+
+local toggleSize = UDim2.new(0, 50, 0, 50)
+local togglePos = UDim2.new(0.75, -25, 0.15, 0)
+
+UIToggle.Name = "Toggler"
+UIToggle.Parent = Toggle
+UIToggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+UIToggle.BackgroundTransparency = 1
+UIToggle.Position = togglePos
+UIToggle.Size = toggleSize
+UIToggle.Text = ""
+UIToggle.AnchorPoint = Vector2.new(0.5, 0.5) -- set the anchor point to the center
+UIToggle.AutoButtonColor = false -- disable the default button color change
+
+-- create an image label for the button's icon
+local Icon = Instance.new("ImageLabel")
+Icon.Name = "Icon"
+Icon.BackgroundTransparency = 1
+
+local iconSize = UDim2.new(0, 50, 0, 50)
+local iconPos = UDim2.new(0.75, -25, 0.15, 0)
+
+Icon.Position = iconPos -- center the icon
+Icon.Size = iconSize
+Icon.AnchorPoint = Vector2.new(0.5, 0.5) -- set the anchor point to the center
+Icon.Image = "rbxassetid://7743878496" -- replace with your asset ID
+Icon.ImageColor3 = Color3.new(1, 1, 1)
+Icon.ImageTransparency = 0
+Icon.Parent = UIToggle
+
+-- set up the button's mouse click event
+UIToggle.MouseButton1Click:Connect(function()
+    game:GetService('VirtualInputManager'):SendKeyEvent(true, 'N', false, uwu)
+end)
+
+-- hide everything except the image
+UIToggle:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+    for _, child in ipairs(UIToggle:GetChildren()) do
+        if child ~= Icon then
+            child.Visible = false
+        end
+    end
+end)
+end
+
+
+
+
+--             /{ Hide/Unhide Button (Mobile Only) }\
+if game.CoreGui.RobloxGui.FluxusAndroidUI then
+Mobilebutton()
+elseif game.CoreGui.HydrogenGui then
+Mobilebutton()
+end
+
+
+--                                        /{Tabs}/\
+local Tb = Window:MakeTab({
+	Name = "Home", --The name of the tab.
+	Icon = "rbxassetid://7733960981", -- The icon of the tab.
+	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
 })
+local Tab = Window:MakeTab({
+	Name = "Main", --The name of the tab.
+	Icon = "rbxassetid://7733752575", -- The icon of the tab.
+	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
+})
+local Tab1 = Window:MakeTab({
+	Name = "Misc", --The name of the tab.
+	Icon = "rbxassetid://7734021469", -- The icon of the tab.
+	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
+})
+local Tab2 = Window:MakeTab({
+	Name = "Credit", --The name of the tab.
+	Icon = "rbxassetid://7743875962", -- The icon of the tab.
+	PremiumOnly = false --Makes the tab accessible to Sirus Premium users only.
+})
+--                                           /{Home}/\
+local Section = Tb:AddSection({
+	Name = "Home Section" -- The name of the section.
+})
+Tb:AddLabel("Welcome , "..game.Players.LocalPlayer.DisplayName)
+--                                        /{Interface}/\
+local Section = Tab:AddSection({
+	Name = "Hitbox Extender Section" -- The name of the section.
+})
+Tab:AddDropdown({
+	Name = "Select BodyPart", -- The name of the dropdown.
+	Default = BodyPart[1], -- The default value of the dropdown.
+	Options = BodyPart, -- The options in the dropdown.
+	Callback = function(Value) -- The function of the dropdown.
+		getgenv().SelectBodyPart = Value
+	end    
+})
+Tab:AddToggle({
+	Name = "Enable Hitbox Extender",
+	Default = false,
+	Callback = function(Value)
+getgenv().HitboxExtender = Value
+		Hitbox()
+	end    
+})
+Tab:AddTextbox({
+	Name = "Change Size of Hitbox",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		getgenv().SetHitboxSize = Value
+	end	  
+})
+Tab:AddTextbox({
+	Name = "Set Transparency of Hitbox",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Value)
+		getgenv().SetHitboxTrans = Value
+	end	  
+})
+local Section = Tab:AddSection({
+	Name = "Crazy Power Section" -- The name of the section.
+})
+Tab:AddParagraph("How to use :","Click the button and go to the enemies [Fe]")
+Tab:AddParagraph("How to use 2 :","use a hitbox expander to check if enemies are doing anything unusual, such as shifting erratically or behaving strangely. Then, click the buttons.")
+Tab:AddButton({
+	Name = "Instantly Kill Nearest Enemies [Unstable/Buggy]",
+	Callback = function()
+      		InstantKillAllEnemies()
+  	end    
+})
+ local EspSection = Tab:AddSection({
+    Name = "Esp Section"
+})
+Tab:AddDropdown({
+    Name = "Select WhoTo",
+    Default = " ",
+    Options = {"Enemies {Buggy}", "Players", "Both"},
+    Callback = function(Value)
+        SelectWhoEsp = Value
+    end    
+})
+function EnableEspLolOlOL()
+if EspEnabler then
+            local success,Holder = pcall(function()
+                local Folder = game.CoreGui:FindFirstChild("EspHolder")
+                if not Folder then
+                    Folder = Instance.new("Folder")
+                    Folder.Name = "EspHolder"
+                    Folder.Parent = game.CoreGui
+                end
+                return Folder
+            end)
+            
+            if not success then
+                warn("Error creating EspHolder: ", Holder)
+            else
+                spawn(function()
+                    while EspEnabler do
+                        if SelectWhoEsp == "Enemies {Buggy}" then
+                            for _, chr in pairs(game.Workspace.Enemies:GetDescendants()) do
+                                if chr:IsA("Model") and chr:FindFirstChild("EnemyHumanoid") then
+                                    local Esp = Holder:FindFirstChild(chr.Name) or createEsp(Color3.new(1,0,0), chr)
+                                    Esp.Name = chr.Name
+                                end
+                            end
+                        elseif SelectWhoEsp == "Players" then
+                            for _,v in pairs(game.Players:GetChildren()) do
+                                local chr = v.Character
+                                if chr ~= nil then
+                                    local Esp = Holder:FindFirstChild(v.Name) or createEsp(Color3.new(1,1,1), chr)
+                                    Esp.Name = v.Name
+                                end
+                            end
+                        elseif SelectWhoEsp == "Both" then
+                            for _,v in pairs(game.Players:GetChildren()) do
+                                local chr = v.Character
+                                if chr ~= nil then
+                                    local Esp = Holder:FindFirstChild(v.Name) or createEsp(Color3.new(1,1,1), chr)
+                                    Esp.Name = v.Name
+                                end
+                            end
+                            for _, chr in pairs(game.Workspace.Enemies:GetDescendants()) do
+                                if chr:IsA("Model") and chr:FindFirstChild("EnemyHumanoid") then
+                                    local Esp = Holder:FindFirstChild(chr.Name) or createEsp(Color3.new(1,0,0), chr)
+                                    Esp.Name = chr.Name
+                                end
+                            end
+                        end
+                        wait(0.5)
+                    end
+                end)
+            end
+        else
+            -- Remove existing highlights
+            local success,Holder = pcall(function()
+                return game.CoreGui:FindFirstChild("EspHolder")
+            end)
+            
+            if not success then
+                warn("Error finding EspHolder: ", Holder)
+            elseif Holder then
+                for _, Esp in pairs(Holder:GetChildren()) do
+                    Esp:Destroy()
+                end
+            end
+        end
+end
+Tab:AddToggle({
+    Name = "Enable Esp",
+    Default = false,
+    Callback = function(Value)
+        EspEnabler = Value
+        EnableEspLolOlOL()
+    end
+})
+
+local Section = Tab:AddSection({
+	Name = "Weapon Section [Fe]" -- The name of the section.
+})
+local SelectedWeapon = Tab:AddDropdown({
+	Name = "Select weapon", -- The name of the dropdown.
+	Default = " ", -- The default value of the dropdown.
+	Options = WeaponsNameV2, -- The options in the dropdown.
+	Callback = function(Value) -- The function of the dropdown.
+		getgenv().SelectWeapon = Value
+	end    
+})
+Tab:AddButton({
+	Name = "Equip", -- The name of the button.
+	Callback = function() --The function of the button.
+      EquipWeapon()
+  	end    
+})
+Tab:AddButton({
+	Name = "Add the weapon to the inventory", -- The name of the button.
+	Callback = function() --The function of the button.
+      PutItOnInventory()
+  	end    
+})
+Tab:AddButton({
+	Name = "Put all weapons in inventory", -- The name of the button.
+	Callback = function() --The function of the button.
+      for i,v in pairs(game.Players.LocalPlayer.ItemOwned:GetDescendants()) do 
+if v:IsA("BoolValue") then 
+v.Value = true
+end 
+end
+  	end    
+})
+local Section = Tab:AddSection({
+	Name = "Fly Section" -- The name of the section.
+})
+
+Tab:AddToggle({
+    Name = "Enable Fly",
+    Default = false,
+    Callback = function(Value)
+    nowe = Value
+Fly()
+end
+})
+
 local Section = Tab:AddSection({
 	Name = "Unfair Votes Sections [Fe]" -- The name of the section.
 })
@@ -840,9 +1008,11 @@ Tab:AddButton({
       VoteLeft()
   	end    
 })
+
 local Section = Tab:AddSection({
 	Name = "Modified Cooldown Time for Ability Section [Fe]" -- The name of the section.
 })
+
 local CooldownChecker = Tab:AddLabel("Current Cooldown Value : 20")
 Tab:AddTextbox({
 	Name = "Set the cooldown for the ability",
@@ -861,24 +1031,28 @@ Tab:AddButton({
 Tab:AddButton({
 	Name = "Force the cooldown to be set to 0", -- The name of the button.
 	Callback = function() --The function of the button.
-      game.Players.LocalPlayer.Backpack.EpicKatana.Cooldown.Value = 0
+      forceCdLolMmM()
   	end    
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 --                                        { Tabs 2 }
+local Section = Tab1:AddSection({
+	Name = "Misc Section" -- The name of the section.
+})
+Tab1:AddToggle({
+    Name = "Say Henry line",
+    Default = false,
+    Callback = function(Value)
+    getgenv().Henry = Value   
+          SayHenryLine()
+end
+})
+Tab1:AddButton({
+	Name = "Enable/Disable Cutscene", -- The name of the button.
+	Callback = function() --The function of the button.
+	HMMMCUTSCENEWHAT()
+  end
+})
 local Section = Tab1:AddSection({
 	Name = "Walkspeed Section" -- The name of the section.
 })
@@ -904,14 +1078,7 @@ Tab1:AddToggle({
 local Section = Tab1:AddSection({
 	Name = "Teleport to Player Section" -- The name of the section.
 })
--- Get a reference to the client player
-local player = game.Players.LocalPlayer
 
--- Define the options table
-local options = {}
--- Define a function to repopulate the options table
-
--- Define the SelectPlayer dropdown
 local SelectPlayer = Tab1:AddDropdown({
     Name = "Select Player",
     Default = "",
@@ -944,23 +1111,24 @@ local refreshButton = Tab1:AddButton({
 local teleportButton = Tab1:AddButton({
     Name = "Teleport To selected Player",
     Callback = function()
-    
-        local selectedPlayer = game.Players:FindFirstChild(getgenv().SelectedPlayer)
-        if selectedPlayer ~= nil and selectedPlayer.Character ~= nil and selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            local rootPart = selectedPlayer.Character:WaitForChild("HumanoidRootPart")
-            game.Players.LocalPlayer.Character:MoveTo(rootPart.Position)
-        end
+    GotoSelectPlayerLol()
+    end
+})
+local teleportButton = Tab1:AddButton({
+    Name = "View selected Player",
+    Callback = function()
+        ViewSelectedPlayerLol()
+    end
+})
+Tab1:AddButton({
+    Name = "Unview selected Player",
+    Callback = function()
+        UnViewSelectedPlayerLol()
     end
 })
 local Section = Tab1:AddSection({
 	Name = "Camera Section" -- The name of the section.
 })
-
-
-local cameraNames = {}
-for name, value in pairs(cameraModes) do
-    table.insert(cameraNames, name)
-end
 
 -- Define the Select camera dropdown
 local SelectCamera = Tab1:AddDropdown({
@@ -975,43 +1143,20 @@ local SelectCamera = Tab1:AddDropdown({
 Tab1:AddButton({
     Name = "Set the camera mode", -- The name of the button.
     Callback = function() -- The function of the button.
-        local selectedCameraMode = getgenv().Selectcamera
-        if selectedCameraMode ~= nil then
-            workspace.CurrentCamera.CameraType = Enum.CameraType[selectedCameraMode]
-            elseif getgenv().Selectcamera == "Invisicam" then
-game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = "Invisicam"
-        end
+        SelectXamen()
     end
 })
 
 Tab1:AddButton({
     Name = "Fix cam", -- The name of the button.
     Callback = function() -- The function of the button.
-        local selectedCameraMode = getgenv().Selectcamera
-if selectedCameraMode ~= nil then
-    local previousCamera = workspace.CurrentCamera
-    local newCamera = Instance.new("Camera")
-    newCamera.CameraType = Enum.CameraType[selectedCameraMode]
-    newCamera.CFrame = previousCamera.CFrame -- Set the position of the new camera
-    workspace.CurrentCamera = newCamera
-end
+        FixXam()
     end
 })
 Tab1:AddButton({
     Name = "Goto cam", -- The name of the button.
     Callback = function() -- The function of the button.
-        local player = game:GetService("Players").LocalPlayer
-local character = player.Character
-
-if character then
-    local camera = workspace.CurrentCamera
-    local cameraCFrame = camera.CFrame
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-    if humanoid then
-        humanoid:MoveTo(cameraCFrame.p)
-    end
-end
-
+        teleportToCamera()
     end
 })
 local Section = Tab1:AddSection({
@@ -1020,115 +1165,28 @@ local Section = Tab1:AddSection({
 Tab1:AddButton({
 	Name = "Serverhop", -- The name of the button.
 	Callback = function() --The function of the button.
-		local function callback(Text)
-		    if Text == "Yes" then
-		        game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
-		        game.StarterGui:SetCore("SendNotification", {
-		            Title = "Notification";
-		            Text = "Searching A Server. . . Please Wait.";
-		            Icon = "rbxassetid://7734052925";
-		            Duration = 5;
-		        })
-		        wait()
-		        local x = {}
-		        for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
-		            if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
-		                x[#x + 1] = v.id
-		            end
-		        end
-		        if #x > 0 then
-		            game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, x[math.random(1, #x)])
-		        end
-		    elseif Text == "Nah" then
-		        game.StarterGui:SetCore("SendNotification", {
-		            Title = "Notification";
-		            Text = "ServerHop Action Failed.";
-		            Icon = "rbxassetid://7743878496";
-		            Duration = 5;
-		        })
-		    end
-		end
-
-		local NotificationBindable = Instance.new("BindableFunction")
-		NotificationBindable.OnInvoke = callback
-
-		game.StarterGui:SetCore("SendNotification", {
-		    Title = "Notification";
-		    Text = "You sure you want to Leave from the server And Go to another random server?";
-		    Icon = "rbxassetid://7733658271";
-		    Duration = 5;
-		    Button1 = "Yes";
-		    Button2 = "Nah";
-		    Callback = NotificationBindable;
-		})
+		ServerHop()
 	end
 })
 
 Tab1:AddButton({
     Name = "Rejoin",
     Callback = function()
-        local function callback(Text)
-            if Text == "Yes" then
-                game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "Notification";
-                    Text = "Rejoining. . . Please Wait.";
-                    Icon = "rbxassetid://7733964719";
-                    Duration = 5;
-                })
-            elseif Text == "Nah" then
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "Notification";
-                    Text = "Rejoin Action Failed.";
-                    Icon = "rbxassetid://7743878496";
-                    Duration = 5;
-                })
-            end
+        RejoinLoLol()
         end
-
-        local NotificationBindable = Instance.new("BindableFunction")
-        NotificationBindable.OnInvoke = callback
-
-        game.StarterGui:SetCore("SendNotification", {
-            Title = "Notification";
-            Text = "You sure you want to rejoin from the server?";
-            Icon = "rbxassetid://7733658271";
-            Duration = 5;
-            Button1 = "Yes";
-            Button2 = "Nah";
-            Callback = NotificationBindable;
-        })
-    end -- add this closing curly brace
 })
-
-
-
-
-
-
 local Section = Tab1:AddSection({
-	Name = "Misc Section" -- The name of the section.
-})
-Tab1:AddToggle({
-    Name = "Say Henry line",
-    Default = false,
-    Callback = function(Value)
-    getgenv().Henry = Value
-        while getgenv().Henry do wait(18)
-          SayHenryLine()
-          end
-end
+	Name = "Tool Section" -- The name of the section.
 })
 Tab1:AddButton({
-	Name = "Enable/Disable Cutscene", -- The name of the button.
-	Callback = function() --The function of the button.
-	if game.ReplicatedStorage.Game.Cutscene.Value == true then
-      game.ReplicatedStorage.Game.Cutscene.Value = false
-elseif game.ReplicatedStorage.Game.Cutscene.Value == false then
-game.ReplicatedStorage.Game.Cutscene.Value = true
-  	end    
-  end
+    Name = "Tp Tool",
+    Callback = function()
+        TpTool()
+        end
 })
+
+
+
 
 
 -- Credit
