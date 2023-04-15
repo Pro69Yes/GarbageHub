@@ -43,11 +43,11 @@ local OrionLib = {
 	},
 	SelectedTheme = "TokyoNight",
 	Folder = nil,
-	SaveCfg = false,
+	SaveCfg = true,
 	Settings = {
 		LockDragging = true,
 		TweenDragSpeed = 60,
-		CloseKeyBind = Enum.KeyCode.RightShift
+		CloseKeyBind = Enum.KeyCode.N
 	}
 }
 
@@ -836,8 +836,8 @@ function OrionLib:MakeWindow(WindowConfig)
 		UIHidden = true
 		OrionLib:MakeNotification({
 			Name = "Interface Hidden",
-			Content = "Tap RightShift to reopen the interface",
-			Time = 5
+			Content = "Tap N to reopen the interface",
+			Time = 4
 		})
 		WindowConfig.CloseCallback()
 	end)
